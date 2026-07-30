@@ -24,7 +24,66 @@
     --text-dark: #24333B;
     --text-light: #687783;
 }
+.hero-image {
+    height: 220px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    position:relative;
+    margin-bottom:2rem;
+}
 
+.medical-circle {
+    width:150px;
+    height:150px;
+    border-radius:50%;
+    background:linear-gradient(
+        135deg,
+        var(--sage-light),
+        var(--blue-soft)
+    );
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:70px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.08);
+}
+
+.floating-card {
+    position:absolute;
+    background:white;
+    padding:12px 18px;
+    border-radius:20px;
+    font-size:.9rem;
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    animation:float 4s infinite ease-in-out;
+}
+
+.card-one {
+    top:10px;
+    left:10%;
+}
+
+.card-two {
+    right:8%;
+    top:50px;
+    animation-delay:1s;
+}
+
+.card-three {
+    bottom:10px;
+    left:25%;
+    animation-delay:2s;
+}
+
+@keyframes float {
+    0%,100% {
+        transform:translateY(0);
+    }
+    50% {
+        transform:translateY(-10px);
+    }
+}
         html {
             scroll-behavior: smooth;
         }
@@ -612,27 +671,8 @@
     <div class="container">
         <!-- HOME PAGE -->
         <div id="home" class="page active">
-         <section class="hero">
-
-<div class="hero-image">
-    <div class="medical-circle">
-        🏥
-    </div>
-    <div class="floating-card card-one">
-        🩺 Tests explained
-    </div>
-    <div class="floating-card card-two">
-        💙 Less uncertainty
-    </div>
-    <div class="floating-card card-three">
-        📋 ER guide
-    </div>
-</div>
-
-<h1>
-    The ER visit,
-    <span>explained.</span>
-</h1>
+         <div class="hero">
+                <h1>ER Companion</h1>
                 <p>Helping you understand what happens during your emergency department visit. Get answers, reduce anxiety, and feel more prepared.</p>
                 <div class="hero-buttons">
                     <button class="btn btn-primary" onclick="showPage('chat')">Ask a Question</button>
