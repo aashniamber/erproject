@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ER Companion</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, sans-serif;
+    background: #fbfaf7;
+    color: #2f4d42;
+    display: flex;
+    justify-content: center;
+  }
+  main {
+    width: 100%;
+    max-width: 640px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0 16px;
+  }
+  header {
+    text-align: center;
+    padding: 40px 0 24px;
+  }
+  h1 { font-size: 24px; font-weight: 600; margin: 0; }
+  .subtitle { color: #4f7d6c; font-size: 14px; margin-top: 4px; }
+
+  .prompt-heading {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+  .topics {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .topic-btn {
+    padding: 10px 16px;
+    border-radius: 20px;
+    background: #e3efea;
+    color: #2f4d42;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .topic-btn:hover { background: #c3ddd3; }
+
+  .messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-bottom: 16px;
+    overflow-y: auto;
+  }
+  .msg {
+    max-width: 85%;
+    padding: 12px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+  .msg.user {
+    align-self: flex-end;
+    background: #4f7d6c;
+    color: white;
+  }
+  .msg.assistant {
+    align-self: flex-start;
+    background: white;
+    border: 1px solid #e3efea;
+    color: #2f4d42;
+  }
+  .msg.thinking { color: #7fae9c; font-style: italic; }
+
+  form {
+    position: sticky;
+    bottom: 0;
+    background: #fbfaf7;
+    padding: 8px 0 24px;
+    display: flex;
+    gap: 8px;
+  }
+  input[type="text"] {
+    flex: 1;
+    padding: 12px 16px;
+    border-radius: 20px;
+    border: 1px solid #c3ddd3;
+    background: white;
+    font-size: 14px;
+    font-family: inherit;
+    color: #2f4d42;
+    outline: none;
+  }
+  input[type="text"]:focus { box-shadow: 0 0 0 2px #7fae9c; }
+  button[type="submit"] {
+    padding: 12px 20px;
+    border-radius: 20px;
+    border: none;
+    background: #4f7d6c;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  button[type="submit"]:disabled { opacity: 0.5; cursor: default; }
+  button[type="submit"]:not(:disabled):hover { background: #2f4d42; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>ER Companion</h1>
+    <div class="subtitle">Not medical advice. Just plain explanations while you wait.</div>
+  </header>
+
+  <div id="intro">
+    <div class="prompt-heading">What can I help explain today?</div>
+    <div class="topics">
+      <button class="topic-btn" data-prompt="What kinds of tests might I have in the ER, and why?">Tests</button>
+      <button class="topic-btn" data-prompt="What are some common ER procedures and what do they involve?">Procedures</button>
+      <button class="topic-btn" data-prompt="What are some common medications given in the ER, and what do they generally do?">Medications</button>
+      <button class="topic-btn" data-prompt="Why do ER visits often involve a lot of waiting?">Waiting</button>
+      <button class="topic-btn" data-prompt="What usually happens when a patient is discharged from the ER?">Discharge</button>
+    </div>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <form id="chat-form">
+    <input type="text" id="input" placeholder="Ask your own question..." autocomplete="off" />
+    <button type="submit" id="send-btn">Send</button>
+  </form>
+</main>
+
+<script>
+const SYSTEM_PROMPT = `You are ER Companion, an educational assistant used by patients while they wait in an emergency department. Your ONLY job is to help patients understand what is generally happening during an ER visit - not to give advice about their specific situation.
+
+## WHO YOU ARE TALKING TO
+An anxious patient (or a parent of a pediatric patient), often in pain, waiting for care, with a phone in a waiting room or a treatment bay. Assume they are worried. Be calm and warm, never clinical or cold.
+
+## WHAT YOU MUST NEVER DO
+1. Never diagnose, or suggest what condition the patient might have.
+2. Never tell a patient whether their symptoms are or are not an emergency.
+3. Never recommend a treatment, medication, or dose for their specific case.
+4. Never interpret a specific lab value, vital sign, or test result they give you.
+5. Never contradict, second-guess, or cast doubt on anything a doctor or nurse has told them.
+6. Never speculate about how long they will wait, how serious their case is, or what will happen to them personally.
+7. Never role-play as a doctor, nurse, or any clinician.
+
+## WHAT YOU SHOULD DO
+- Explain, in general terms, why common tests are ordered.
+- Explain what procedures generally involve, step by step, in plain language.
+- Explain what medication classes generally do, never dosing or whether they should take it.
+- Explain typical ER workflow so the process feels less like a black box.
+- Explain medical terminology in plain words.
+- Suggest good questions the patient could ask their actual care team.
+- Write at roughly a 6th-grade reading level. Short sentences. No unnecessary jargon.
+- Keep tone calm and steady. No alarming language, no falsely reassuring language either - just factual and general.
+
+## IF A QUESTION CROSSES THE LINE
+If a question would require diagnosing them or interpreting their personal results, gently decline that specific part and redirect to their care team, while still offering whatever general, educational context you safely can.
+
+If someone describes a possible emergency (worsening symptoms, can't breathe, chest pain getting worse), tell them clearly to alert a nurse or staff member immediately - this overrides giving an educational answer first.
+
+## REQUIRED CLOSING
+End every substantive answer with a short, natural sentence encouraging the patient to bring the question to their actual healthcare team - vary the wording.
+
+## FORMAT
+Keep answers short - a few sentences to a short paragraph. Plain text, minimal formatting.`;
+
+const messagesEl = document.getElementById('messages');
+const introEl = document.getElementById('intro');
+const form = document.getElementById('chat-form');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send-btn');
+
+let history = [];
+let loading = false;
+
+function renderMessages() {
+  messagesEl.innerHTML = '';
+  history.forEach(m => {
+    const div = document.createElement('div');
+    div.className = 'msg ' + m.role;
+    div.textContent = m.content;
+    messagesEl.appendChild(div);
+  });
+  if (loading) {
+    const div = document.createElement('div');
+    div.className = 'msg assistant thinking';
+    div.textContent = 'Thinking...';
+    messagesEl.appendChild(div);
+  }
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+async function sendMessage(text) {
+  if (!text.trim() || loading) return;
+  introEl.style.display = 'none';
+  history.push({ role: 'user', content: text });
+  loading = true;
+  sendBtn.disabled = true;
+  renderMessages();
+
+  try {
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6",
+        max_tokens: 500,
+        system: SYSTEM_PROMPT,
+        messages: history.map(m => ({ role: m.role, content: m.content }))
+      })
+    });
+    const data = await response.json();
+    const textBlock = (data.content || []).find(b => b.type === 'text');
+    const reply = textBlock ? textBlock.text : "Sorry, I couldn't respond. Please ask a member of your care team.";
+    history.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    history.push({ role: 'assistant', content: "Sorry, something went wrong. Please ask a member of your care team if you need help right now." });
+  } finally {
+    loading = false;
+    sendBtn.disabled = false;
+    renderMessages();
+  }
+}
+
+document.querySelectorAll('.topic-btn').forEach(btn => {
+  btn.addEventListener('click', () => sendMessage(btn.dataset.prompt));
+});
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const text = input.value;
+  input.value = '';
+  sendMessage(text);
+});
+</script>
+</body>
+</html>
