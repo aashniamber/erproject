@@ -5,145 +5,378 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>ER Companion</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
 
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    font-family: 'Inter', system-ui, sans-serif;
-    background: #fbfaf7;
-    color: #2f4d42;
-    display: flex;
-    justify-content: center;
+  :root{
+    --sand-50:#fbfaf7;
+    --sand-100:#f5f1e9;
+    --sage-50:#f4f9f7;
+    --sage-100:#e3efea;
+    --sage-200:#c3ddd3;
+    --sage-400:#7fae9c;
+    --sage-600:#4f7d6c;
+    --sage-800:#2f4d42;
+    --peach-300:#f0c9a8;
+    --peach-500:#e2a06e;
+    --peach-700:#c17a45;
   }
-  main {
-    width: 100%;
-    max-width: 640px;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 0 16px;
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--sand-50);
+    color:var(--sage-800);
   }
-  header {
-    text-align: center;
-    padding: 40px 0 24px;
+  h1,h2,h3,.display{font-family:'Fraunces',serif;}
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:2px solid var(--sage-600);outline-offset:3px;}
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;}
   }
-  h1 { font-size: 24px; font-weight: 600; margin: 0; }
-  .subtitle { color: #4f7d6c; font-size: 14px; margin-top: 4px; }
 
-  .prompt-heading {
-    text-align: center;
-    font-size: 18px;
-    margin-bottom: 16px;
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky;top:0;z-index:20;
+    background:rgba(251,250,247,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--sage-100);
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 32px;
   }
-  .topics {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 24px;
-  }
-  .topic-btn {
-    padding: 10px 16px;
-    border-radius: 20px;
-    background: #e3efea;
-    color: #2f4d42;
-    border: none;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .topic-btn:hover { background: #c3ddd3; }
+  .logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;}
+  .logo-mark{width:24px;height:24px;flex-shrink:0;}
+  nav .links{display:flex;gap:24px;font-size:14px;font-weight:500;}
+  nav .links a{text-decoration:none;color:var(--sage-600);}
+  nav .links a:hover{color:var(--sage-800);}
 
-  .messages {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding-bottom: 16px;
-    overflow-y: auto;
-  }
-  .msg {
-    max-width: 85%;
-    padding: 12px 16px;
-    border-radius: 20px;
-    font-size: 14px;
-    line-height: 1.6;
-    white-space: pre-wrap;
-  }
-  .msg.user {
-    align-self: flex-end;
-    background: #4f7d6c;
-    color: white;
-  }
-  .msg.assistant {
-    align-self: flex-start;
-    background: white;
-    border: 1px solid #e3efea;
-    color: #2f4d42;
-  }
-  .msg.thinking { color: #7fae9c; font-style: italic; }
+  section{padding:80px 24px;}
+  .wrap{max-width:960px;margin:0 auto;}
+  .wrap-narrow{max-width:680px;margin:0 auto;}
 
-  form {
-    position: sticky;
-    bottom: 0;
-    background: #fbfaf7;
-    padding: 8px 0 24px;
-    display: flex;
-    gap: 8px;
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:96px 24px 64px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
   }
-  input[type="text"] {
-    flex: 1;
-    padding: 12px 16px;
-    border-radius: 20px;
-    border: 1px solid #c3ddd3;
-    background: white;
-    font-size: 14px;
-    font-family: inherit;
-    color: #2f4d42;
-    outline: none;
+  .hero::before{
+    content:"";
+    position:absolute;
+    top:-120px;left:50%;transform:translateX(-50%);
+    width:900px;height:900px;
+    background:radial-gradient(circle, var(--sage-50) 0%, transparent 60%);
+    z-index:0;
   }
-  input[type="text"]:focus { box-shadow: 0 0 0 2px #7fae9c; }
-  button[type="submit"] {
-    padding: 12px 20px;
-    border-radius: 20px;
-    border: none;
-    background: #4f7d6c;
-    color: white;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
+  .hero-inner{position:relative;z-index:1;}
+  .eyebrow{
+    display:inline-block;
+    font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+    color:var(--sage-600);font-weight:600;
+    background:var(--sage-100);
+    padding:6px 14px;border-radius:999px;
+    margin-bottom:24px;
   }
-  button[type="submit"]:disabled { opacity: 0.5; cursor: default; }
-  button[type="submit"]:not(:disabled):hover { background: #2f4d42; }
+  .hero h1{
+    font-size:clamp(36px,6vw,58px);
+    font-weight:600;
+    line-height:1.08;
+    margin:0 0 20px;
+    color:var(--sage-800);
+  }
+  .hero h1 em{font-style:italic;color:var(--peach-700);font-weight:500;}
+  .hero p.sub{
+    font-size:18px;color:var(--sage-600);
+    max-width:520px;margin:0 auto 40px;
+    line-height:1.6;
+  }
+  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;}
+  .btn{
+    padding:14px 28px;border-radius:999px;font-size:15px;font-weight:600;
+    border:none;cursor:pointer;text-decoration:none;display:inline-block;
+    transition:transform 0.15s, background 0.15s;
+  }
+  .btn-primary{background:var(--sage-600);color:white;}
+  .btn-primary:hover{background:var(--sage-800);transform:translateY(-1px);}
+  .btn-ghost{background:transparent;color:var(--sage-800);border:1px solid var(--sage-200);}
+  .btn-ghost:hover{background:var(--sage-50);}
+
+  /* breathing circle signature element */
+  .breathe-wrap{display:flex;justify-content:center;margin-bottom:8px;}
+  .breathe{width:180px;height:180px;position:relative;}
+  .breathe circle{
+    transform-origin:center;
+    animation:breathe 5.5s ease-in-out infinite;
+  }
+  .breathe circle.c1{animation-delay:0s;}
+  .breathe circle.c2{animation-delay:-1.8s;}
+  .breathe circle.c3{animation-delay:-3.6s;}
+  @keyframes breathe{
+    0%,100%{transform:scale(0.75);opacity:0.25;}
+    50%{transform:scale(1);opacity:0.55;}
+  }
+
+  /* ---------- TOPIC CARDS ---------- */
+  .section-head{text-align:center;margin-bottom:48px;}
+  .section-head .eyebrow{margin-bottom:16px;}
+  .section-head h2{font-size:32px;font-weight:600;margin:0 0 12px;}
+  .section-head p{color:var(--sage-600);font-size:16px;max-width:480px;margin:0 auto;}
+
+  .card-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+    gap:16px;
+  }
+  .topic-card{
+    background:white;
+    border:1px solid var(--sage-100);
+    border-radius:20px;
+    padding:24px 20px;
+    text-align:left;
+    cursor:pointer;
+    transition:transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  }
+  .topic-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 12px 24px -12px rgba(47,77,66,0.18);
+    border-color:var(--sage-200);
+  }
+  .topic-card .icon{
+    width:40px;height:40px;
+    background:var(--sage-50);
+    border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;
+  }
+  .topic-card h3{font-size:16px;font-weight:600;margin:0 0 6px;}
+  .topic-card p{font-size:13px;color:var(--sage-600);margin:0;line-height:1.5;}
+
+  /* ---------- CHAT ---------- */
+  .chat-shell{
+    background:white;
+    border:1px solid var(--sage-100);
+    border-radius:28px;
+    box-shadow:0 24px 48px -24px rgba(47,77,66,0.15);
+    overflow:hidden;
+  }
+  .chat-header{
+    background:var(--sage-800);
+    color:white;
+    padding:20px 24px;
+    display:flex;align-items:center;gap:10px;
+  }
+  .chat-dot{width:8px;height:8px;border-radius:50%;background:var(--peach-300);}
+  .chat-header span{font-size:14px;font-weight:500;opacity:0.9;}
+  #messages{
+    min-height:220px;max-height:420px;overflow-y:auto;
+    padding:24px;display:flex;flex-direction:column;gap:12px;
+    background:var(--sand-50);
+  }
+  #messages:empty::after{
+    content:"Pick a topic above, or ask your own question below.";
+    color:var(--sage-400);font-size:14px;
+  }
+  .msg{max-width:82%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6;white-space:pre-wrap;}
+  .msg.user{align-self:flex-end;background:var(--sage-600);color:white;border-bottom-right-radius:6px;}
+  .msg.assistant{align-self:flex-start;background:white;border:1px solid var(--sage-100);border-bottom-left-radius:6px;}
+  .msg.thinking{display:flex;align-items:center;gap:8px;color:var(--sage-400);font-style:italic;}
+  .mini-breathe{width:14px;height:14px;border-radius:50%;background:var(--sage-200);animation:breathe 1.6s ease-in-out infinite;}
+
+  form#chat-form{
+    display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--sage-100);background:white;
+  }
+  input[type="text"]{
+    flex:1;padding:12px 16px;border-radius:999px;border:1px solid var(--sage-200);
+    background:var(--sand-50);font-size:14px;font-family:inherit;color:var(--sage-800);outline:none;
+  }
+  input[type="text"]:focus{border-color:var(--sage-600);}
+  button[type="submit"]{
+    padding:12px 22px;border-radius:999px;border:none;background:var(--sage-600);
+    color:white;font-size:14px;font-weight:600;cursor:pointer;
+  }
+  button[type="submit"]:disabled{opacity:0.5;cursor:default;}
+  button[type="submit"]:not(:disabled):hover{background:var(--sage-800);}
+
+  /* ---------- WHY DIFFERENT ---------- */
+  .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
+  .diff-card{padding:8px;}
+  .diff-card .check{
+    width:32px;height:32px;border-radius:50%;background:var(--sage-100);
+    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
+  }
+  .diff-card h3{font-size:16px;font-weight:600;margin:0 0 8px;}
+  .diff-card p{font-size:14px;color:var(--sage-600);line-height:1.6;margin:0;}
+
+  /* ---------- FOUNDER ---------- */
+  .founder{
+    background:var(--sage-800);
+    color:var(--sand-50);
+    border-radius:32px;
+    padding:64px 40px;
+    display:grid;
+    grid-template-columns:200px 1fr;
+    gap:48px;
+    align-items:center;
+  }
+  .founder-avatar{width:180px;height:180px;}
+  .founder h2{font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;color:var(--peach-300);margin:0 0 16px;font-family:'Inter',sans-serif;}
+  .founder h3{font-size:28px;font-weight:600;margin:0 0 6px;}
+  .founder .role{font-size:14px;color:var(--sage-200);margin-bottom:20px;}
+  .founder p.bio{font-size:15px;line-height:1.7;color:#e3efea;margin:0 0 20px;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;
+    background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.15);
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    text-align:center;padding:48px 24px 64px;color:var(--sage-400);font-size:13px;
+  }
+  footer .disclaimer{
+    max-width:520px;margin:0 auto 16px;
+    background:var(--sage-50);border:1px solid var(--sage-100);
+    padding:16px 20px;border-radius:16px;color:var(--sage-600);line-height:1.6;
+  }
+
+  @media (max-width:640px){
+    .founder{grid-template-columns:1fr;text-align:center;padding:40px 24px;}
+    .founder-avatar{margin:0 auto;}
+    .chip-row{justify-content:center;}
+    nav .links{display:none;}
+  }
 </style>
 </head>
 <body>
-<main>
-  <header>
-    <h1>ER Companion</h1>
-    <div class="subtitle">Not medical advice. Just plain explanations while you wait.</div>
-  </header>
 
-  <div id="intro">
-    <div class="prompt-heading">What can I help explain today?</div>
-    <div class="topics">
-      <button class="topic-btn" data-prompt="What kinds of tests might I have in the ER, and why?">Tests</button>
-      <button class="topic-btn" data-prompt="What are some common ER procedures and what do they involve?">Procedures</button>
-      <button class="topic-btn" data-prompt="What are some common medications given in the ER, and what do they generally do?">Medications</button>
-      <button class="topic-btn" data-prompt="Why do ER visits often involve a lot of waiting?">Waiting</button>
-      <button class="topic-btn" data-prompt="What usually happens when a patient is discharged from the ER?">Discharge</button>
+<nav>
+  <div class="logo">
+    <svg class="logo-mark" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="10" fill="#e3efea"/>
+      <path d="M12 7v10M7 12h10" stroke="#4f7d6c" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    ER Companion
+  </div>
+  <div class="links">
+    <a href="#topics">How it helps</a>
+    <a href="#chat">Try it</a>
+    <a href="#founder">About</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="breathe-wrap">
+      <svg class="breathe" viewBox="0 0 180 180">
+        <circle class="c1" cx="90" cy="90" r="80" fill="var(--sage-100)"/>
+        <circle class="c2" cx="90" cy="90" r="60" fill="var(--sage-200)"/>
+        <circle class="c3" cx="90" cy="90" r="40" fill="var(--sage-400)"/>
+      </svg>
+    </div>
+    <span class="eyebrow">Emergency department companion</span>
+    <h1>The waiting room,<br/><em>explained.</em></h1>
+    <p class="sub">Plain-language answers about tests, procedures, and medications while you wait — so the visit feels a little less like a black box, and a little less scary.</p>
+    <div class="cta-row">
+      <a href="#chat" class="btn btn-primary">Try it now</a>
+      <a href="#founder" class="btn btn-ghost">About the founder</a>
     </div>
   </div>
+</section>
 
-  <div class="messages" id="messages"></div>
+<!-- TOPICS -->
+<section id="topics">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">What we explain</span>
+      <h2>Five things patients ask most</h2>
+      <p>Tap any card to see how ER Companion explains it — always general, never diagnostic.</p>
+    </div>
+    <div class="card-grid" id="topic-cards">
+      <button class="topic-card" data-prompt="What kinds of tests might I have in the ER, and why?">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v6.5L5.5 18a2 2 0 001.8 3h9.4a2 2 0 001.8-3L14 9.5V3" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 15h8" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Tests</h3>
+        <p>Why a CT, X-ray, or bloodwork gets ordered.</p>
+      </button>
+      <button class="topic-card" data-prompt="What are some common ER procedures and what do they involve?">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-6 4 12 2-6h4" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Procedures</h3>
+        <p>What an IV, stitches, or a splint involves.</p>
+      </button>
+      <button class="topic-card" data-prompt="What are some common medications given in the ER, and what do they generally do?">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(45 12 12)" stroke="#4f7d6c" stroke-width="1.6"/><path d="M9 15l6-6" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Medications</h3>
+        <p>What a class of medication is generally for.</p>
+      </button>
+      <button class="topic-card" data-prompt="Why do ER visits often involve a lot of waiting?">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#4f7d6c" stroke-width="1.6"/><path d="M12 8v4l3 2" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Waiting</h3>
+        <p>Why ERs triage by urgency, not arrival time.</p>
+      </button>
+      <button class="topic-card" data-prompt="What usually happens when a patient is discharged from the ER?">
+        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="#4f7d6c" stroke-width="1.6"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <h3>Discharge</h3>
+        <p>What to expect when it's time to go home.</p>
+      </button>
+    </div>
+  </div>
+</section>
 
-  <form id="chat-form">
-    <input type="text" id="input" placeholder="Ask your own question..." autocomplete="off" />
-    <button type="submit" id="send-btn">Send</button>
-  </form>
-</main>
+<!-- CHAT -->
+<section id="chat">
+  <div class="wrap-narrow">
+    <div class="section-head">
+      <span class="eyebrow">Try it yourself</span>
+      <h2>Ask a question</h2>
+      <p>This is a live demo, powered by Claude, with the same guardrails described below.</p>
+    </div>
+    <div class="chat-shell">
+      <div class="chat-header"><span class="chat-dot"></span><span>ER Companion — educational only, not medical advice</span></div>
+      <div id="messages"></div>
+      <form id="chat-form">
+        <input type="text" id="input" placeholder="Ask your own question..." autocomplete="off" />
+        <button type="submit" id="send-btn">Send</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- WHY DIFFERENT -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Why it's different</span>
+      <h2>Built with hard limits, on purpose</h2>
+    </div>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <div class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Never diagnoses</h3>
+        <p>It explains general medical concepts — it never tells you what's wrong with you.</p>
+      </div>
+      <div class="diff-card">
+        <div class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Never contradicts your team</h3>
+        <p>Every answer defers to the doctors and nurses actually treating you.</p>
+      </div>
+      <div class="diff-card">
+        <div class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Written to calm, not alarm</h3>
+        <p>Sixth-grade reading level, no jargon, no scary language — and no false reassurance either.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="disclaimer">
+    ER Companion is an educational tool, not a diagnostic one. It does not replace your doctors and nurses, and it cannot assess your personal medical situation. If something feels urgent, tell a staff member right away.
+  </div>
+  &copy; 2026 ER Companion — a student project, built to be piloted, not prescribed.
+</footer>
 
 <script>
 const SYSTEM_PROMPT = `You are ER Companion, an educational assistant used by patients while they wait in an emergency department. Your ONLY job is to help patients understand what is generally happening during an ER visit - not to give advice about their specific situation.
@@ -182,7 +415,6 @@ End every substantive answer with a short, natural sentence encouraging the pati
 Keep answers short - a few sentences to a short paragraph. Plain text, minimal formatting.`;
 
 const messagesEl = document.getElementById('messages');
-const introEl = document.getElementById('intro');
 const form = document.getElementById('chat-form');
 const input = document.getElementById('input');
 const sendBtn = document.getElementById('send-btn');
@@ -190,7 +422,7 @@ const sendBtn = document.getElementById('send-btn');
 let history = [];
 let loading = false;
 
-function renderMessages() {
+function renderMessages(){
   messagesEl.innerHTML = '';
   history.forEach(m => {
     const div = document.createElement('div');
@@ -198,48 +430,47 @@ function renderMessages() {
     div.textContent = m.content;
     messagesEl.appendChild(div);
   });
-  if (loading) {
+  if(loading){
     const div = document.createElement('div');
-    div.className = 'msg assistant thinking';
-    div.textContent = 'Thinking...';
+    div.className = 'msg thinking';
+    div.innerHTML = '<span class="mini-breathe"></span> Thinking...';
     messagesEl.appendChild(div);
   }
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-async function sendMessage(text) {
-  if (!text.trim() || loading) return;
-  introEl.style.display = 'none';
-  history.push({ role: 'user', content: text });
+async function sendMessage(text){
+  if(!text.trim() || loading) return;
+  history.push({ role:'user', content:text });
   loading = true;
   sendBtn.disabled = true;
   renderMessages();
 
-  try {
+  try{
     const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-6",
-        max_tokens: 500,
-        system: SYSTEM_PROMPT,
-        messages: history.map(m => ({ role: m.role, content: m.content }))
+        model:"claude-sonnet-4-6",
+        max_tokens:500,
+        system:SYSTEM_PROMPT,
+        messages: history.map(m => ({ role:m.role, content:m.content }))
       })
     });
     const data = await response.json();
     const textBlock = (data.content || []).find(b => b.type === 'text');
     const reply = textBlock ? textBlock.text : "Sorry, I couldn't respond. Please ask a member of your care team.";
-    history.push({ role: 'assistant', content: reply });
-  } catch (err) {
-    history.push({ role: 'assistant', content: "Sorry, something went wrong. Please ask a member of your care team if you need help right now." });
-  } finally {
+    history.push({ role:'assistant', content:reply });
+  }catch(err){
+    history.push({ role:'assistant', content:"Sorry, something went wrong. Please ask a member of your care team if you need help right now." });
+  }finally{
     loading = false;
     sendBtn.disabled = false;
     renderMessages();
   }
 }
 
-document.querySelectorAll('.topic-btn').forEach(btn => {
+document.querySelectorAll('.topic-card').forEach(btn => {
   btn.addEventListener('click', () => sendMessage(btn.dataset.prompt));
 });
 
