@@ -1,547 +1,2052 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ER Companion</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&display=swap');
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ER Companion - Patient Education</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  :root{
-    --sand-50:#fbfaf7;
-    --sage-50:#f4f9f7;
-    --sage-100:#e3efea;
-    --sage-200:#c3ddd3;
-    --sage-400:#7fae9c;
-    --sage-600:#4f7d6c;
-    --sage-800:#2f4d42;
+        :root {
+            --cream: #FDFBF7;
+            --sage: #9CAF88;
+            --sage-light: #E8EFDB;
+            --blue-soft: #E8F4F8;
+            --blue-main: #5B9DB4;
+            --lavender: #E8DDF0;
+            --peach: #F4D4C8;
+            --text-dark: #2C3E50;
+            --text-light: #6B7280;
+        }
 
-    --coral-100:#fce6da;
-    --coral-400:#ec9c6e;
-    --coral-600:#cf7442;
+        html {
+            scroll-behavior: smooth;
+        }
 
-    --blue-100:#dee9f2;
-    --blue-400:#82abcb;
-    --blue-600:#4f7ea3;
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(to bottom, var(--cream), var(--blue-soft));
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
 
-    --gold-100:#faf0d3;
-    --gold-400:#e3bd5a;
-    --gold-600:#bd8f22;
+        /* Header */
+        header {
+            background: white;
+            border-bottom: 1px solid var(--sage-light);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            sticky: top;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-    --lavender-100:#ebe3f7;
-    --lavender-400:#b199dd;
-    --lavender-600:#8768bd;
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    font-family:'Inter',system-ui,sans-serif;
-    background:var(--sand-50);
-    color:var(--sage-800);
-  }
-  h1,h2,h3,.display{font-family:'Fraunces',serif;}
-  a{color:inherit;}
-  :focus-visible{outline:2px solid var(--sage-600);outline-offset:3px;}
-  @media (prefers-reduced-motion:reduce){
-    *{animation:none!important;transition:none!important;}
-  }
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-  /* ---------- NAV ---------- */
-  nav{
-    position:sticky;top:0;z-index:20;
-    background:rgba(251,250,247,0.85);
-    backdrop-filter:blur(8px);
-    border-bottom:1px solid var(--sage-100);
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 32px;
-  }
-  .logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:16px;}
-  .logo-mark{width:24px;height:24px;flex-shrink:0;}
-  nav .links{display:flex;gap:24px;font-size:14px;font-weight:500;}
-  nav .links a{text-decoration:none;color:var(--sage-600);}
-  nav .links a:hover{color:var(--sage-800);}
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
 
-  section{padding:80px 24px;}
-  .wrap{max-width:1000px;margin:0 auto;}
-  .wrap-narrow{max-width:680px;margin:0 auto;}
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--sage) to var(--blue-main));
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 20px;
+        }
 
-  /* ---------- HERO ---------- */
-  .hero{
-    padding:80px 24px 40px;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero::before{
-    content:"";
-    position:absolute;
-    top:-200px;left:-120px;
-    width:520px;height:520px;
-    background:radial-gradient(circle, var(--gold-100) 0%, transparent 70%);
-    z-index:0;
-  }
-  .hero::after{
-    content:"";
-    position:absolute;
-    top:-100px;right:-160px;
-    width:600px;height:600px;
-    background:radial-gradient(circle, var(--blue-100) 0%, transparent 70%);
-    z-index:0;
-  }
-  .hero-grid{
-    position:relative;z-index:1;
-    max-width:1000px;margin:0 auto;
-    display:grid;grid-template-columns:1.1fr 0.9fr;
-    gap:40px;align-items:center;
-  }
-  .eyebrow{
-    display:inline-block;
-    font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
-    color:var(--sage-600);font-weight:600;
-    background:var(--sage-100);
-    padding:6px 14px;border-radius:999px;
-    margin-bottom:20px;
-  }
-  .hero h1{
-    font-size:clamp(34px,5vw,52px);
-    font-weight:600;
-    line-height:1.08;
-    margin:0 0 18px;
-    color:var(--sage-800);
-  }
-  .hero h1 em{font-style:italic;color:var(--coral-600);font-weight:500;}
-  .hero p.sub{
-    font-size:17px;color:var(--sage-600);
-    max-width:440px;margin:0 0 32px;
-    line-height:1.6;
-  }
-  .cta-row{display:flex;gap:12px;flex-wrap:wrap;}
-  .btn{
-    padding:14px 28px;border-radius:999px;font-size:15px;font-weight:600;
-    border:none;cursor:pointer;text-decoration:none;display:inline-block;
-    transition:transform 0.15s, background 0.15s;
-  }
-  .btn-primary{background:var(--sage-600);color:white;}
-  .btn-primary:hover{background:var(--sage-800);transform:translateY(-1px);}
-  .btn-ghost{background:transparent;color:var(--sage-800);border:1px solid var(--sage-200);}
-  .btn-ghost:hover{background:var(--sage-50);}
+        .logo-text h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
 
-  /* hero illustration */
-  .hero-art{width:100%;height:auto;}
-  .float1{animation:float1 6s ease-in-out infinite;}
-  .float2{animation:float2 7s ease-in-out infinite;}
-  @keyframes float1{0%,100%{transform:translateY(0px);}50%{transform:translateY(-10px);}}
-  @keyframes float2{0%,100%{transform:translateY(0px);}50%{transform:translateY(8px);}}
-  .breathe-ring{transform-origin:center;animation:breathe 4s ease-in-out infinite;}
-  @keyframes breathe{0%,100%{transform:scale(0.95);opacity:0.5;}50%{transform:scale(1.08);opacity:0.9;}}
+        .logo-text p {
+            font-size: 0.75rem;
+            color: var(--text-light);
+        }
 
-  /* ---------- TOPIC CARDS ---------- */
-  .section-head{text-align:center;margin-bottom:48px;}
-  .section-head h2{font-size:32px;font-weight:600;margin:0 0 12px;}
-  .section-head p{color:var(--sage-600);font-size:16px;max-width:480px;margin:0 auto;}
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
 
-  .card-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:16px;
-  }
-  .topic-card{
-    background:white;
-    border:1px solid var(--sage-100);
-    border-radius:20px;
-    padding:24px 20px;
-    text-align:left;
-    cursor:pointer;
-    transition:transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-  }
-  .topic-card:hover{
-    transform:translateY(-3px);
-    box-shadow:0 12px 24px -12px rgba(47,77,66,0.18);
-  }
-  .topic-card .icon{
-    width:40px;height:40px;
-    border-radius:12px;
-    display:flex;align-items:center;justify-content:center;
-    margin-bottom:16px;
-  }
-  .topic-card h3{font-size:16px;font-weight:600;margin:0 0 6px;}
-  .topic-card p{font-size:13px;color:var(--sage-600);margin:0;line-height:1.5;}
+        .nav-links a {
+            font-size: 0.875rem;
+            color: var(--text-light);
+            text-decoration: none;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
 
-  .icon.sage{background:var(--sage-100);}
-  .icon.coral{background:var(--coral-100);}
-  .icon.blue{background:var(--blue-100);}
-  .icon.gold{background:var(--gold-100);}
-  .icon.lavender{background:var(--lavender-100);}
+        .nav-links a:hover {
+            color: var(--text-dark);
+        }
 
-  /* ---------- ILLUSTRATION STRIP ---------- */
-  .strip{
-    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
-  }
-  .strip-card{
-    border-radius:24px;padding:28px 24px;min-height:180px;
-    display:flex;flex-direction:column;justify-content:flex-end;
-    position:relative;overflow:hidden;
-  }
-  .strip-card svg{position:absolute;top:16px;right:16px;opacity:0.9;}
-  .strip-card h3{font-size:16px;font-weight:600;margin:0 0 4px;color:white;}
-  .strip-card p{font-size:13px;margin:0;color:rgba(255,255,255,0.85);}
-  .strip-card.c1{background:linear-gradient(150deg,var(--sage-600),var(--sage-800));}
-  .strip-card.c2{background:linear-gradient(150deg,var(--coral-400),var(--coral-600));}
-  .strip-card.c3{background:linear-gradient(150deg,var(--blue-400),var(--blue-600));}
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1rem;
+        }
 
-  /* ---------- CHAT ---------- */
-  .chat-shell{
-    background:white;
-    border:1px solid var(--sage-100);
-    border-radius:28px;
-    box-shadow:0 24px 48px -24px rgba(47,77,66,0.15);
-    overflow:hidden;
-  }
-  .chat-header{
-    background:var(--sage-800);
-    color:white;
-    padding:20px 24px;
-    display:flex;align-items:center;gap:10px;
-  }
-  .chat-dot{width:8px;height:8px;border-radius:50%;background:var(--coral-400);}
-  .chat-header span{font-size:14px;font-weight:500;opacity:0.9;}
-  #messages{
-    min-height:220px;max-height:420px;overflow-y:auto;
-    padding:24px;display:flex;flex-direction:column;gap:12px;
-    background:var(--sand-50);
-  }
-  #messages:empty::after{
-    content:"Pick a topic above, or ask your own question below.";
-    color:var(--sage-400);font-size:14px;
-  }
-  .msg{max-width:82%;padding:12px 16px;border-radius:18px;font-size:14px;line-height:1.6;white-space:pre-wrap;}
-  .msg.user{align-self:flex-end;background:var(--sage-600);color:white;border-bottom-right-radius:6px;}
-  .msg.assistant{align-self:flex-start;background:white;border:1px solid var(--sage-100);border-bottom-left-radius:6px;}
-  .msg.thinking{display:flex;align-items:center;gap:8px;color:var(--sage-400);font-style:italic;}
-  .mini-breathe{width:14px;height:14px;border-radius:50%;background:var(--gold-400);animation:breathe 1.6s ease-in-out infinite;}
+        .page {
+            display: none;
+        }
 
-  form#chat-form{
-    display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--sage-100);background:white;
-  }
-  input[type="text"]{
-    flex:1;padding:12px 16px;border-radius:999px;border:1px solid var(--sage-200);
-    background:var(--sand-50);font-size:14px;font-family:inherit;color:var(--sage-800);outline:none;
-  }
-  input[type="text"]:focus{border-color:var(--sage-600);}
-  button[type="submit"]{
-    padding:12px 22px;border-radius:999px;border:none;background:var(--sage-600);
-    color:white;font-size:14px;font-weight:600;cursor:pointer;
-  }
-  button[type="submit"]:disabled{opacity:0.5;cursor:default;}
-  button[type="submit"]:not(:disabled):hover{background:var(--sage-800);}
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
 
-  /* ---------- WHY DIFFERENT ---------- */
-  .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
-  .diff-card .check{
-    width:32px;height:32px;border-radius:50%;
-    display:flex;align-items:center;justify-content:center;margin-bottom:14px;
-  }
-  .diff-card h3{font-size:16px;font-weight:600;margin:0 0 8px;}
-  .diff-card p{font-size:14px;color:var(--sage-600);line-height:1.6;margin:0;}
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-  /* ---------- FOOTER ---------- */
-  footer{
-    text-align:center;padding:48px 24px 64px;color:var(--sage-400);font-size:13px;
-  }
-  footer .disclaimer{
-    max-width:520px;margin:0 auto 16px;
-    background:var(--sage-50);border:1px solid var(--sage-100);
-    padding:16px 20px;border-radius:16px;color:var(--sage-600);line-height:1.6;
-  }
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
 
-  @media (max-width:760px){
-    .hero-grid{grid-template-columns:1fr;text-align:center;}
-    .cta-row{justify-content:center;}
-    .hero p.sub{margin:0 auto 32px;}
-    .strip{grid-template-columns:1fr;}
-    nav .links{display:none;}
-  }
-</style>
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.125rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 500;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--sage);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--sage);
+            border: 2px solid var(--sage);
+        }
+
+        .btn-secondary:hover {
+            background: var(--sage-light);
+        }
+
+        /* Module Grid */
+        .modules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .module-card {
+            background: white;
+            border: 1px solid var(--sage-light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .module-card:hover {
+            border-color: var(--sage);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transform: scale(1.05);
+        }
+
+        .module-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .module-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+        }
+
+        .module-card p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Cards & Content */
+        .content-card {
+            background: white;
+            border: 1px solid var(--sage-light);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .content-card:hover {
+            border-color: var(--sage);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .content-card.expanded {
+            border-color: var(--sage);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-header h3 {
+            font-size: 1.125rem;
+            color: var(--text-dark);
+        }
+
+        .chevron {
+            transition: transform 0.3s;
+            font-size: 1.5rem;
+        }
+
+        .content-card.expanded .chevron {
+            transform: rotate(180deg);
+        }
+
+        .card-content {
+            display: none;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid var(--sage-light);
+        }
+
+        .content-card.expanded .card-content {
+            display: block;
+        }
+
+        .card-content h4 {
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .card-content h4:first-child {
+            margin-top: 0;
+        }
+
+        .card-content p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .card-content ul {
+            margin-left: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .card-content li {
+            margin-bottom: 0.5rem;
+        }
+
+        /* Info Box */
+        .info-box {
+            border-radius: 1rem;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 1px solid;
+        }
+
+        .info-box.blue {
+            background: var(--blue-soft);
+            border-color: var(--blue-main);
+        }
+
+        .info-box.sage {
+            background: var(--sage-light);
+            border-color: var(--sage);
+        }
+
+        .info-box.peach {
+            background: rgba(244, 212, 200, 0.3);
+            border-color: var(--peach);
+        }
+
+        .info-box.lavender {
+            background: var(--lavender);
+            border-color: #D8B5E8;
+        }
+
+        .info-box h3 {
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .info-box p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* Search */
+        .search-box {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.75rem;
+            border: 2px solid var(--sage);
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .search-box input:focus {
+            ring: 2px solid var(--sage);
+            box-shadow: 0 0 0 3px rgba(156, 175, 136, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--sage);
+        }
+
+        /* Feedback Widget */
+        .feedback-widget {
+            background: var(--blue-soft);
+            border: 1px solid var(--blue-main);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .feedback-label {
+            font-weight: 500;
+            color: var(--text-dark);
+            margin-bottom: 1rem;
+        }
+
+        .feedback-buttons {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+        }
+
+        .feedback-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--sage-light);
+            background: white;
+            color: var(--text-dark);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .feedback-btn:hover {
+            background: var(--sage-light);
+        }
+
+        .feedback-btn.selected {
+            background: var(--sage);
+            color: white;
+            border-color: var(--sage);
+        }
+
+        .feedback-comment {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--sage-light);
+            border-radius: 0.5rem;
+            font-family: inherit;
+            resize: vertical;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .feedback-comment.show {
+            display: block;
+        }
+
+        .feedback-submit {
+            background: var(--sage);
+            color: white;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            font-weight: 500;
+            width: 100%;
+            display: none;
+        }
+
+        .feedback-submit.show {
+            display: block;
+        }
+
+        .feedback-submit:hover {
+            opacity: 0.9;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0.5rem;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--sage), var(--blue-main));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 1.5rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -1.125rem;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: white;
+            border: 3px solid var(--sage);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timeline-item .number {
+            position: absolute;
+            left: -0.875rem;
+            top: 0.25rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--sage);
+            font-size: 0.875rem;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        /* Accessibility */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+        }
+
+        /* Utility */
+        h2 {
+            font-size: 1.75rem;
+            font-weight: bold;
+            color: var(--text-dark);
+            margin-bottom: 1.5rem;
+        }
+
+        .section {
+            margin-bottom: 2rem;
+        }
+
+        .text-small {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .mt-3 {
+            margin-top: 1.5rem;
+        }
+
+        .mb-3 {
+            margin-bottom: 1.5rem;
+        }
+    </style>
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <a class="logo" onclick="showPage('home')">
+                <div class="logo-icon">E</div>
+                <div class="logo-text">
+                    <h1>ER Companion</h1>
+                    <p>Patient Education</p>
+                </div>
+            </a>
+            <nav class="nav-links">
+                <a onclick="showPage('safety')">Safety</a>
+                <a onclick="showPage('accessibility')">Accessibility</a>
+            </nav>
+        </div>
+    </header>
 
-<nav>
-  <div class="logo">
-    <svg class="logo-mark" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" fill="#e3efea"/>
-      <path d="M12 7v10M7 12h10" stroke="#4f7d6c" stroke-width="2" stroke-linecap="round"/>
-    </svg>
-    ER Companion
-  </div>
-  <div class="links">
-    <a href="#topics">How it helps</a>
-    <a href="#chat">Try it</a>
-    <a href="#why">Why it's different</a>
-  </div>
-</nav>
+    <!-- Main Container -->
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <h1>ER Companion</h1>
+                <p>Helping you understand what happens during your emergency department visit. Get answers, reduce anxiety, and feel more prepared.</p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="showPage('chat')">Ask a Question</button>
+                    <button class="btn btn-secondary" onclick="showPage('journey')">My ER Journey</button>
+                </div>
+            </div>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-grid">
-    <div>
-      <span class="eyebrow">Emergency department companion</span>
-      <h1>The waiting room,<br/><em>explained.</em></h1>
-      <p class="sub">Plain-language answers about tests, procedures, and medications while you wait — so the visit feels a little less like a black box, and a little less scary.</p>
-      <div class="cta-row">
-        <a href="#chat" class="btn btn-primary">Try it now</a>
-        <a href="#topics" class="btn btn-ghost">See what it explains</a>
-      </div>
+            <div class="modules-grid">
+                <div class="module-card" onclick="showPage('journey')">
+                    <div class="module-icon">📍</div>
+                    <h3>My ER Journey</h3>
+                    <p>Understand each step of your emergency department visit.</p>
+                </div>
+                <div class="module-card" onclick="showPage('chat')">
+                    <div class="module-icon">🧠</div>
+                    <h3>Ask ER Companion</h3>
+                    <p>Ask questions about tests, procedures, and medical concepts.</p>
+                </div>
+                <div class="module-card" onclick="showPage('tests')">
+                    <div class="module-icon">🩺</div>
+                    <h3>Common Tests</h3>
+                    <p>Learn about blood tests, X-rays, CT scans, and more.</p>
+                </div>
+                <div class="module-card" onclick="showPage('procedures')">
+                    <div class="module-icon">💉</div>
+                    <h3>Procedures</h3>
+                    <p>What to expect during common ER procedures.</p>
+                </div>
+                <div class="module-card" onclick="showPage('medications')">
+                    <div class="module-icon">💊</div>
+                    <h3>Medications</h3>
+                    <p>General information about medication categories.</p>
+                </div>
+                <div class="module-card" onclick="showPage('wait-time')">
+                    <div class="module-icon">⏳</div>
+                    <h3>Why Am I Waiting?</h3>
+                    <p>Understand how emergency departments prioritize care.</p>
+                </div>
+                <div class="module-card" onclick="showPage('dictionary')">
+                    <div class="module-icon">📖</div>
+                    <h3>Medical Dictionary</h3>
+                    <p>Search and understand medical terms you hear in the ER.</p>
+                </div>
+                <div class="module-card" onclick="showPage('questions')">
+                    <div class="module-icon">❓</div>
+                    <h3>Questions to Ask</h3>
+                    <p>Empower yourself with questions for your care team.</p>
+                </div>
+                <div class="module-card" onclick="showPage('parents')">
+                    <div class="module-icon">❤️</div>
+                    <h3>Parent Resources</h3>
+                    <p>Support and information for parents of pediatric patients.</p>
+                </div>
+                <div class="module-card" onclick="showPage('accessibility')">
+                    <div class="module-icon">🌎</div>
+                    <h3>Accessibility</h3>
+                    <p>Adjust text size, contrast, and language settings.</p>
+                </div>
+            </div>
+
+            <div class="info-box blue">
+                <p><strong>📱 Mobile-Friendly:</strong> Designed for phones and tablets. Access this site via QR code in the waiting room.</p>
+                <a onclick="showPage('safety')" style="color: var(--blue-main); text-decoration: underline; cursor: pointer;">Learn what ER Companion does and doesn't do →</a>
+            </div>
+
+            <div class="feedback-widget" id="feedback-home">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('home', 'home')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- JOURNEY PAGE -->
+        <div id="journey" class="page">
+            <h1 style="margin-bottom: 1rem;">My ER Journey</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Follow each step of your emergency department visit. Understanding what to expect can help reduce anxiety and help you know what's happening.</p>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="number">1</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Check In</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>You arrive at the emergency department and go to the registration desk. Staff will ask for your insurance card, ID, and basic health information like allergies and current medications.</p>
+                            <h4>Why It Happens</h4>
+                            <p>The ER needs to know who you are, what your insurance is, and important health details to keep you safe and ensure they can contact you.</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>How long does check-in take?</li>
+                                <li>What do I need to bring?</li>
+                                <li>What if I don't have insurance?</li>
+                            </ul>
+                            <p class="text-small" style="margin-top: 1rem;">⏱️ Typically 5-10 minutes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="number">2</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Triage</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>A nurse takes you to a private area and quickly assesses your condition. They will take your vital signs (temperature, blood pressure, heart rate, breathing rate), ask about your symptoms, and ask questions about your health history.</p>
+                            <h4>Why It Happens</h4>
+                            <p>Triage helps the ER team understand how sick or injured you are. This determines how urgently you need care, not the order you'll be seen (first come, first served).</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>Why do they ask so many questions?</li>
+                                <li>Will the order I'm seen depend on when I arrived?</li>
+                                <li>What if my condition changes while waiting?</li>
+                            </ul>
+                            <p class="text-small" style="margin-top: 1rem;">⏱️ Typically 10-15 minutes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="number">3</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Waiting Room</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>After triage, you wait in the waiting room until a treatment room is available. The wait time depends on how busy the ER is, what type of patients are already being treated, and how serious their conditions are.</p>
+                            <h4>Why It Happens</h4>
+                            <p>ERs handle emergencies based on urgency, not the order patients arrive. Someone with a heart attack will be seen before someone with a sprained ankle, even if the ankle injury arrived first.</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>Why is the wait so long?</li>
+                                <li>Can someone check on me?</li>
+                                <li>What if I feel worse while waiting?</li>
+                            </ul>
+                            <p class="text-small" style="margin-top: 1rem;">⏱️ Variable (15 minutes to several hours)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="number">4</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Treatment Room</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>You are taken to a treatment room or bed. A nurse or doctor will ask more detailed questions about your symptoms, perform a physical exam, and may place an IV if needed.</p>
+                            <h4>Why It Happens</h4>
+                            <p>The care team needs detailed information and needs to examine you directly to understand what's happening and what tests or treatment you might need.</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>Will it hurt?</li>
+                                <li>Why do they need another exam?</li>
+                                <li>What is an IV?</li>
+                            </ul>
+                            <p class="text-small" style="margin-top: 1rem;">⏱️ Typically 20-45 minutes</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="number">5</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Testing & Diagnosis</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>Based on your symptoms, the doctor may order tests like blood work, X-rays, ultrasounds, CT scans, or an ECG. These tests help the doctor understand what's causing your symptoms.</p>
+                            <h4>Why It Happens</h4>
+                            <p>Tests provide information the doctor cannot get from just talking to you or examining you. They help doctors make an accurate diagnosis.</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>Why do I need so many tests?</li>
+                                <li>Is the radiation from X-rays safe?</li>
+                                <li>How long do tests take?</li>
+                            </ul>
+                            <p class="text-small" style="margin-top: 1rem;">⏱️ 30 minutes to several hours (depends on test type)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="number">6</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Results & Next Steps</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>The doctor reviews your test results and physical exam findings. They discuss what they found, explain your diagnosis, and talk about what happens next — whether you can go home, need more testing, need treatment, or need to be admitted to the hospital.</p>
+                            <h4>Why It Happens</h4>
+                            <p>Understanding your condition helps you know what to expect and what to do next to get better.</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>What do my test results mean?</li>
+                                <li>Am I going to be okay?</li>
+                                <li>Do I have to stay in the hospital?</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="number">7</div>
+                    <div class="content-card" onclick="toggleCard(event)">
+                        <div class="card-header">
+                            <h3>Discharge</h3>
+                            <span class="chevron">▼</span>
+                        </div>
+                        <div class="card-content">
+                            <h4>What Happens</h4>
+                            <p>Before you leave, a nurse or doctor will give you discharge instructions. These will explain your diagnosis, what medications to take at home, what activities to avoid, and when to follow up with your doctor. You'll also get written instructions and may have questions answered.</p>
+                            <h4>Why It Happens</h4>
+                            <p>Discharge instructions help ensure you continue to recover properly at home and know when to return to the hospital if something changes.</p>
+                            <h4>Common Questions</h4>
+                            <ul>
+                                <li>What do I need to do at home?</li>
+                                <li>When do I see my regular doctor?</li>
+                                <li>When should I come back?</li>
+                            </ul>
+                            <p class="text-small" style="margin-top: 1rem;">⏱️ Typically 15-20 minutes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box peach" style="margin-top: 2rem;">
+                <p><strong>💡 Remember:</strong> Every ER visit is unique. Your care team may prioritize differently based on your condition and the needs of other patients. Don't hesitate to ask your nurse or doctor questions about what's happening or what to expect next.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('journey', 'journey')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- CHAT PAGE -->
+        <div id="chat" class="page">
+            <h1 style="margin-bottom: 1rem;">Ask ER Companion</h1>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">Have questions about medical terms, tests, procedures, or how the ER works? Ask away—ER Companion is here to explain things in simple, clear language.</p>
+
+            <div class="info-box blue" style="margin-bottom: 1.5rem;">
+                <p><strong>You can ask about:</strong> Medical terms, tests (blood work, X-rays, CT scans), procedures (stitches, IVs, casts), medications, ER workflows, and why you might need certain things done.</p>
+            </div>
+
+            <div class="info-box peach" style="margin-bottom: 1.5rem;">
+                <p><strong>⚠️ Important:</strong> ER Companion explains things in general terms. For advice about YOUR specific situation, always talk to your healthcare team. In an emergency, call 911.</p>
+            </div>
+
+            <div style="background: white; border: 1px solid var(--sage-light); border-radius: 1rem; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; flex-direction: column; min-height: 400px;">
+                <div style="flex: 1; overflow-y: auto; margin-bottom: 1rem;">
+                    <div id="chat-messages" style="display: flex; flex-direction: column; gap: 1rem;">
+                        <div style="padding: 1rem; background: var(--sage-light); border-radius: 0.75rem; border-bottom-left-radius: 0; max-width: 80%;">
+                            <p>Welcome! I'm ER Companion. Ask me about medical terms, tests, procedures, ER processes, or anything else about the emergency department. What would you like to know?</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 0.5rem;">
+                    <input type="text" id="chat-input" placeholder="Ask a question..." style="flex: 1; padding: 0.75rem; border: 1px solid var(--sage-light); border-radius: 0.5rem; font-family: inherit;">
+                    <button onclick="sendChatMessage()" class="btn btn-primary" style="padding: 0.75rem 1.5rem;">Send</button>
+                </div>
+            </div>
+
+            <div class="info-box sage">
+                <h3>💡 Tips for Asking</h3>
+                <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                    <li><strong>Be specific:</strong> "What does a CT scan do?" works better than "Tell me about tests."</li>
+                    <li><strong>Ask about processes:</strong> "How does triage work?" or "Why does the ER prioritize by urgency?"</li>
+                    <li><strong>Don't ask about your personal diagnosis:</strong> For that, talk to your doctor.</li>
+                    <li><strong>It's okay to follow up:</strong> Ask clarifying questions if something doesn't make sense.</li>
+                </ul>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('chat', 'chat')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- TESTS PAGE -->
+        <div id="tests" class="page">
+            <h1 style="margin-bottom: 1rem;">Common ER Tests</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Tests help doctors understand what's happening in your body. Here's what you might expect.</p>
+
+            <h2 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">🩸 Blood Tests</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Complete Blood Count (CBC)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What is it?</h4>
+                    <p>A blood test that counts the different types of cells in your blood: red blood cells, white blood cells, and platelets.</p>
+                    <h4>Why might a doctor order this?</h4>
+                    <p>Doctors order a CBC to check if you have an infection, anemia, bleeding problems, or certain diseases.</p>
+                    <h4>What happens?</h4>
+                    <p>A nurse or lab technician will take a small sample of blood from a vein in your arm using a needle. It takes about 30 seconds. The blood is then tested in the lab.</p>
+                    <h4>Common Questions</h4>
+                    <ul>
+                        <li>Will it hurt?</li>
+                        <li>How long does it take?</li>
+                        <li>When will I get results?</li>
+                        <li>Why does the doctor need this test?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Comprehensive Metabolic Panel (CMP)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What is it?</h4>
+                    <p>A blood test that measures 14 different chemicals in your blood to check kidney function, liver function, and electrolyte balance.</p>
+                    <h4>Why might a doctor order this?</h4>
+                    <p>Doctors use this to check if your kidneys and liver are working properly, and to see if your electrolytes (sodium, potassium) are balanced.</p>
+                    <h4>What happens?</h4>
+                    <p>A nurse takes a blood sample from your arm (like the CBC). No special preparation is needed. Results take a few hours.</p>
+                    <h4>Common Questions</h4>
+                    <ul>
+                        <li>What do these chemicals do?</li>
+                        <li>Does this test hurt?</li>
+                        <li>What if something is abnormal?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Troponin Test (Cardiac Marker)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What is it?</h4>
+                    <p>A blood test that checks for a protein released by the heart when it's damaged. It helps doctors know if you've had a heart attack.</p>
+                    <h4>Why might a doctor order this?</h4>
+                    <p>If you have chest pain, shortness of breath, or heart-related symptoms, the doctor will order a troponin test.</p>
+                    <h4>What happens?</h4>
+                    <p>A blood sample is taken from your arm. The test is quick and painless. Results usually take 30-60 minutes.</p>
+                    <h4>Common Questions</h4>
+                    <ul>
+                        <li>Do I have a heart attack?</li>
+                        <li>How accurate is this test?</li>
+                        <li>Can this be normal if I had chest pain?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 2rem; margin-bottom: 1rem;">📸 Imaging Tests</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>X-Ray</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What is it?</h4>
+                    <p>An imaging test that uses a small amount of radiation to take a picture of the inside of your body. Common X-rays include chest, abdomen, or bone X-rays.</p>
+                    <h4>Why might a doctor order this?</h4>
+                    <p>Doctors use X-rays to look for broken bones, pneumonia, fluid in the lungs, or other abnormalities.</p>
+                    <h4>What happens?</h4>
+                    <p>You'll be positioned in front of an X-ray machine. The technician will take pictures from different angles. Each picture takes only a few seconds. You won't feel anything.</p>
+                    <h4>Common Questions</h4>
+                    <ul>
+                        <li>Is radiation dangerous?</li>
+                        <li>Why do you have to step out of the room?</li>
+                        <li>How long does it take?</li>
+                        <li>Can pregnant women get X-rays?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>CT (CAT) Scan</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What is it?</h4>
+                    <p>A special X-ray machine that takes many pictures from different angles and creates a detailed 3D image of your body. It can show soft tissues better than regular X-rays.</p>
+                    <h4>Why might a doctor order this?</h4>
+                    <p>Doctors use CT scans to look for internal injuries, bleeding, tumors, or other serious conditions. It's especially useful for head, chest, and abdominal injuries.</p>
+                    <h4>What happens?</h4>
+                    <p>You'll lie on a table that slides into a large, donut-shaped machine. You'll hear some noise. It takes 10-30 minutes depending on what area is being scanned. You won't feel anything.</p>
+                    <h4>Common Questions</h4>
+                    <ul>
+                        <li>Is a CT scan safe?</li>
+                        <li>Why does it take so long?</li>
+                        <li>Will I be alone in the machine?</li>
+                        <li>Do I need contrast dye?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box blue" style="margin-top: 2rem;">
+                <p><strong>📋 About Your Results:</strong> Your doctor will explain what your test results mean. Test results are interpreted in context—one number means different things for different people and different conditions. Always ask your care team to explain any results you don't understand.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('tests', 'tests')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- PROCEDURES PAGE -->
+        <div id="procedures" class="page">
+            <h1 style="margin-bottom: 1rem;">ER Procedures</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Procedures are treatments or diagnostic steps. Knowing what to expect can help reduce anxiety.</p>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>IV (Intravenous) Placement</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What Happens</h4>
+                    <p>A nurse will clean a spot on your arm with an antiseptic wipe, then insert a small needle with a plastic tube (catheter) into a vein. The needle is removed, leaving just the plastic tube in place. This usually takes 30-60 seconds.</p>
+                    <h4>Why It's Done</h4>
+                    <p>An IV allows doctors and nurses to give you fluids, medications, or draw blood without repeated needle sticks. It's a quick way to get treatment into your body.</p>
+                    <h4>What You May Feel</h4>
+                    <p>You'll feel a quick pinch when the needle goes in. Once it's in, you shouldn't feel much except pressure. The area might feel a little sore for a moment.</p>
+                    <h4>Questions to Ask</h4>
+                    <ul>
+                        <li>Will it hurt?</li>
+                        <li>How long will the IV stay in?</li>
+                        <li>Can I move my arm with the IV in?</li>
+                        <li>What if the nurse misses the vein?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Blood Draw (Phlebotomy)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What Happens</h4>
+                    <p>A lab technician or nurse will tie a rubber band around your upper arm to make veins more visible, clean the area with an antiseptic wipe, and insert a needle to draw blood into vials. The whole process takes 2-3 minutes.</p>
+                    <h4>Why It's Done</h4>
+                    <p>Blood tests help doctors understand what's happening in your body by checking cells, chemicals, and markers of disease.</p>
+                    <h4>What You May Feel</h4>
+                    <p>You'll feel a pinch when the needle enters your skin. Some people feel lightheaded, which is normal. Tell the staff if you feel faint.</p>
+                    <h4>Questions to Ask</h4>
+                    <ul>
+                        <li>How many vials do you need?</li>
+                        <li>When will I get results?</li>
+                        <li>What if you miss the vein?</li>
+                        <li>Why do I need so many tests?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Stitches (Sutures)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What Happens</h4>
+                    <p>After the doctor cleans and inspects your wound, they may numb the area with anesthetic (so you won't feel pain, only pressure). Then they'll use a needle and thread to close the wound with several stitches. This takes 5-20 minutes depending on the size.</p>
+                    <h4>Why It's Done</h4>
+                    <p>Stitches hold your skin together while it heals, reduce scarring, and prevent infection.</p>
+                    <h4>What You May Feel</h4>
+                    <p>You'll feel pressure and tugging, but if numbed properly, you shouldn't feel sharp pain. Some people hear the needle go through their skin.</p>
+                    <h4>Questions to Ask</h4>
+                    <ul>
+                        <li>When do the stitches come out?</li>
+                        <li>How do I care for this at home?</li>
+                        <li>Will there be a scar?</li>
+                        <li>What should I watch for?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Splint Application</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What Happens</h4>
+                    <p>After an X-ray to check for fractures, a nurse or doctor will apply a splint to immobilize your arm, leg, or other body part. They'll pad the area first, then wrap the splint securely. This takes 10-15 minutes.</p>
+                    <h4>Why It's Done</h4>
+                    <p>A splint prevents movement of the injured area, reduces pain, and helps prevent further injury while you heal.</p>
+                    <h4>What You May Feel</h4>
+                    <p>Pressure as the splint is applied. Once on, it should feel supportive and reduce pain. It might feel itchy or uncomfortable at first.</p>
+                    <h4>Questions to Ask</h4>
+                    <ul>
+                        <li>How long do I have to wear this?</li>
+                        <li>Can I shower with it?</li>
+                        <li>When do I need a real cast?</li>
+                        <li>What exercises should I do?</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box lavender" style="margin-top: 2rem;">
+                <p><strong>💬 It's Okay to Ask:</strong> Before any procedure, you can ask: "Can you explain what you're about to do?" or "Is this going to hurt?" Your care team wants you to feel comfortable and informed.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('procedures', 'procedures')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- MEDICATIONS PAGE -->
+        <div id="medications" class="page">
+            <h1 style="margin-bottom: 1rem;">Medication Categories</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Here's general information about types of medications used in the ER. Ask your doctor or nurse about YOUR medications specifically.</p>
+
+            <div class="info-box peach" style="margin-bottom: 1.5rem;">
+                <p><strong>⚠️ Important:</strong> This explains medication types in general. For questions about medications YOU are taking or about to take, always talk to your doctor or nurse.</p>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">💊 Pain Medications</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Acetaminophen (Tylenol)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What It Does</h4>
+                    <p>Reduces pain and fever by affecting how your body senses pain and regulates temperature.</p>
+                    <h4>Why It's Used</h4>
+                    <ul>
+                        <li>Headache</li>
+                        <li>Fever</li>
+                        <li>General body aches</li>
+                        <li>Mild to moderate pain</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Ibuprofen (Advil, Motrin)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What It Does</h4>
+                    <p>Reduces pain, fever, and inflammation (swelling) by decreasing chemicals in your body that cause these symptoms.</p>
+                    <h4>Why It's Used</h4>
+                    <ul>
+                        <li>Muscle strain</li>
+                        <li>Joint pain</li>
+                        <li>Fever</li>
+                        <li>Inflammation</li>
+                        <li>Menstrual cramps</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">🦠 Antibiotics</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Antibiotics (Examples: Amoxicillin, Azithromycin)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What It Does</h4>
+                    <p>Kill or slow down the growth of bacteria that are causing an infection.</p>
+                    <h4>Why It's Used</h4>
+                    <ul>
+                        <li>Bacterial infection</li>
+                        <li>Pneumonia</li>
+                        <li>Urinary tract infection</li>
+                        <li>Strep throat</li>
+                        <li>Wound infection</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">💧 IV Fluids</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>IV Fluids (Normal Saline, Lactated Ringer's)</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>What It Does</h4>
+                    <p>Replace lost fluids and electrolytes in your body to correct dehydration.</p>
+                    <h4>Why It's Used</h4>
+                    <ul>
+                        <li>Dehydration</li>
+                        <li>Severe vomiting or diarrhea</li>
+                        <li>Blood loss</li>
+                        <li>Shock</li>
+                        <li>Before surgery</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="info-box blue" style="margin-top: 2rem;">
+                <h3>💬 Ask About Your Meds</h3>
+                <p>Before taking any medication, it's good to ask:</p>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem; color: var(--text-light);">
+                    <li>What is this medication?</li>
+                    <li>What will it do?</li>
+                    <li>Are there side effects I should know about?</li>
+                    <li>Do I take this at home, or only here?</li>
+                    <li>Can I take this with my other medications?</li>
+                </ul>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('medications', 'medications')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- WAIT TIME PAGE -->
+        <div id="wait-time" class="page">
+            <h1 style="margin-bottom: 1rem;">Why Am I Waiting?</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">ERs can feel like long waits. Understanding how emergency departments prioritize care can help you understand why.</p>
+
+            <div class="info-box sage" style="margin-bottom: 2rem;">
+                <h2 style="font-size: 1.5rem; margin: 0 0 1rem 0; color: var(--sage);">🚨 Urgency-Based Care, Not First-Come-First-Served</h2>
+                <p style="margin: 0;">Emergency departments don't work like a restaurant or DMV. Instead of seeing patients in the order they arrive, ERs prioritize patients based on how urgently they need treatment. A patient having a heart attack will be seen before someone with a sprained ankle—even if the ankle injury arrived first.</p>
+            </div>
+
+            <h2>📋 What is Triage?</h2>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">When you arrive at the ER, a nurse performs "triage"—a quick assessment to determine how urgently you need care. Based on your symptoms, vital signs, and medical history, the triage nurse will assign you a priority level.</p>
+
+            <div style="background: #FFE6E6; border: 1px solid #FF6B6B; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem;">
+                <p><strong style="color: #C92A2A;">🔴 Level 1: Emergent (Immediate)</strong></p>
+                <p style="color: var(--text-light); margin-top: 0.5rem; margin-bottom: 0;">Life-threatening situations requiring immediate care. Examples: severe trauma, unconsciousness, active seizures, severe difficulty breathing.</p>
+            </div>
+
+            <div style="background: #FFF3E0; border: 1px solid #F97316; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem;">
+                <p><strong style="color: #EA580C;">🟠 Level 2: Urgent (Very Soon)</strong></p>
+                <p style="color: var(--text-light); margin-top: 0.5rem; margin-bottom: 0;">Serious but not immediately life-threatening. Examples: chest pain, severe head injury, difficulty breathing, loss of consciousness recovering, severe abdominal pain.</p>
+            </div>
+
+            <div style="background: #FFFBEB; border: 1px solid #EAB308; border-radius: 0.75rem; padding: 1rem; margin-bottom: 1rem;">
+                <p><strong style="color: #CA8A04;">🟡 Level 3: Moderate (Relatively Soon)</strong></p>
+                <p style="color: var(--text-light); margin-top: 0.5rem; margin-bottom: 0;">Symptoms that need care but aren't immediately dangerous. Examples: moderate pain, minor injuries, fever, mild shortness of breath.</p>
+            </div>
+
+            <div style="background: #F0FDF4; border: 1px solid #22C55E; border-radius: 0.75rem; padding: 1rem; margin-bottom: 2rem;">
+                <p><strong style="color: #16A34A;">🟢 Level 4: Minor (Least Urgent)</strong></p>
+                <p style="color: var(--text-light); margin-top: 0.5rem; margin-bottom: 0;">Stable with minor problems. Examples: small cuts, sprains, mild rashes, cold symptoms.</p>
+            </div>
+
+            <h2>⏳ Why Am I Still Waiting?</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>1. Higher-Priority Patients</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>If you triage as Level 3 or 4 and there are Level 1 or 2 patients, they'll be seen first. That's the right call medically.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>2. Limited Rooms & Staff</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>ERs have a fixed number of treatment beds and doctors. If all beds are full, you wait for one to open. Staff are working as fast as they safely can.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>3. Tests Take Time</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Lab work, imaging (X-rays, CT scans), and other tests don't give instant results. Doctors can't move forward until they have the information they need.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>4. Unexpected Changes</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Another patient might suddenly become more critical, requiring the doctor's immediate attention. This is normal in emergency medicine.</p>
+                </div>
+            </div>
+
+            <div class="info-box peach" style="margin-top: 2rem;">
+                <p><strong>Remember:</strong> Emergency department staff are working hard to care for all patients safely. Waits happen, but they reflect the complexity of emergency medicine and the commitment to prioritizing the sickest patients. Your care matters, and doctors will see you as soon as they can.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('wait-time', 'wait-time')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- MEDICAL DICTIONARY PAGE -->
+        <div id="dictionary" class="page">
+            <h1 style="margin-bottom: 1rem;">Medical Dictionary</h1>
+            <p style="color: var(--text-light); margin-bottom: 1.5rem;">Hear a word in the ER and don't know what it means? Look it up here.</p>
+
+            <div class="search-box">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="dictionary-search" placeholder="Search for a term (e.g., 'triage', 'IV', 'CBC')" oninput="filterDictionary()">
+            </div>
+
+            <div id="dictionary-results">
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>Triage</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>The process nurses use to quickly check your condition and decide how urgently you need care.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>The nurse will say "Let me triage you" or "You're next for triage" when you first arrive.</p>
+                        <h4>Example</h4>
+                        <p>"During triage, a nurse will ask about your symptoms and take your vital signs (temperature, blood pressure, heart rate)."</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>NPO</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>It means "nothing by mouth" — you cannot eat or drink anything.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>Doctors use this before surgery, procedures, or if they're thinking you might need one.</p>
+                        <h4>Example</h4>
+                        <p>The nurse might say "The doctor ordered NPO because we might need to do a procedure." This usually means you should not have food or water.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>STAT</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>It means "right now" or "immediately" — it's the urgency code doctors use.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>When something needs to happen fast, the doctor will order it "STAT."</p>
+                        <h4>Example</h4>
+                        <p>A doctor might say "I want a chest X-ray STAT" which means the radiology team will drop other work to do it quickly.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>IV</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>A small tube placed in your vein so doctors can give you fluids, medications, or draw blood without repeated needles.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>Many ER patients get an IV as part of their care.</p>
+                        <h4>Example</h4>
+                        <p>A nurse might place an IV in your arm and connect it to a bag of fluids to help with dehydration or to have a line available for medication.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>CBC</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>A blood test that counts your red blood cells, white blood cells, and platelets to check your overall blood health.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>CBC is one of the most common blood tests ordered in the ER.</p>
+                        <h4>Example</h4>
+                        <p>A doctor might order a CBC to check if you have an infection or anemia.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>CT Scan</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>A special X-ray machine that takes many pictures from different angles and creates a detailed 3D image of your body.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>Doctors use CT scans when they need to see inside your body in detail.</p>
+                        <h4>Example</h4>
+                        <p>After head trauma, a doctor might order a CT scan of your head to check for any injuries.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>ECG (or EKG)</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>A simple test that records the electrical activity of your heart using stickers on your chest.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>ECG is often done quickly in the ER if chest pain is a concern.</p>
+                        <h4>Example</h4>
+                        <p>The nurse will place small sticky pads on your chest for 30 seconds to record your heart rhythm.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>Vital Signs</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>The basic measurements of your body's functions: temperature, blood pressure, heart rate, and breathing rate.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>Nurses take vital signs constantly throughout your ER visit.</p>
+                        <h4>Example</h4>
+                        <p>"I'm going to check your vitals" means the nurse will take your temperature, check your pulse, and measure your blood pressure.</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>Admission</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>When you are approved to stay in the hospital for overnight care or longer.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>After the ER, some patients are admitted to the hospital for continued treatment.</p>
+                        <h4>Example</h4>
+                        <p>The doctor might say "We're going to admit you to the hospital for observation and treatment."</p>
+                    </div>
+                </div>
+
+                <div class="content-card" onclick="toggleCard(event)">
+                    <div class="card-header">
+                        <h3>Discharge</h3>
+                        <span class="chevron">▼</span>
+                    </div>
+                    <div class="card-content">
+                        <h4>Simple Definition</h4>
+                        <p>When the doctor says you can leave the hospital or ER because your condition is stable enough to continue care at home.</p>
+                        <h4>Why Patients Hear It</h4>
+                        <p>Discharge means you're leaving the ER or hospital.</p>
+                        <h4>Example</h4>
+                        <p>The nurse will say "The doctor cleared you for discharge" and provide you with instructions for home care.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-box lavender" style="margin-top: 2rem;">
+                <p><strong>💡 Tip:</strong> If you hear a medical term you don't understand, it's always okay to ask: "Can you explain what that means?" Healthcare providers expect questions and want you to understand.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('dictionary', 'dictionary')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- QUESTIONS PAGE -->
+        <div id="questions" class="page">
+            <h1 style="margin-bottom: 1rem;">Questions to Ask Your Care Team</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Asking questions is a sign of good self-advocacy. Here are some questions that might help you understand your care better.</p>
+
+            <div class="info-box sage" style="margin-bottom: 2rem;">
+                <p><strong>✨ Your Voice Matters:</strong> Good healthcare is a two-way conversation. Your doctors and nurses WANT to answer your questions. Don't worry about bothering them—you won't.</p>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">🧠 Understanding Questions</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"What exactly is happening to me?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>This helps ensure you understand your condition. Your care team should explain it in a way that makes sense to you.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"Can you explain that in simpler terms?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>It's okay to ask for clarification. Medical terms can be confusing, and you deserve to understand your own care.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"Why do I need this test/procedure?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Understanding the reason for tests or procedures helps you know why they're important and what they're checking for.</p>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">👀 What to Expect</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"What should I expect to happen next?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Knowing the next steps helps reduce anxiety and prepares you for what's coming.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"How long will this take?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Understanding timelines helps you mentally prepare and know what to expect.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"Will this hurt?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>It's important to know what you might experience so there are no surprises.</p>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">🏥 Follow-Up Questions</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"What should I do at home to take care of myself?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Your care team will give you discharge instructions. Ask if anything is unclear.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"When should I follow up with my doctor?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>Follow-up appointments are important for your recovery. Make sure you know when and where to go.</p>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>"When should I come back to the ER?"</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <p>You should know the red flags that mean you need to return immediately.</p>
+                </div>
+            </div>
+
+            <div class="info-box blue" style="margin-top: 2rem;">
+                <h3>💬 How to Ask Effectively</h3>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem; color: var(--text-light);">
+                    <li><strong>Be direct:</strong> "Can you explain that differently?"</li>
+                    <li><strong>Bring support:</strong> A family member can help you remember</li>
+                    <li><strong>Write things down:</strong> Jot down what was said</li>
+                    <li><strong>Ask for written info:</strong> Request printed instructions</li>
+                    <li><strong>Ask again:</strong> It's totally okay to ask follow-up questions</li>
+                </ul>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('questions', 'questions')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- PARENTS PAGE -->
+        <div id="parents" class="page">
+            <h1 style="margin-bottom: 1rem;">Parent Resources</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Taking a child to the ER can be stressful. Here's information to help you support your child and understand common pediatric ER situations.</p>
+
+            <div class="info-box sage" style="margin-bottom: 2rem;">
+                <p><strong>❤️ You're Doing Great:</strong> Bringing your child to the ER shows you care about their health. Staff understand that parents are often anxious too. Take a breath—your calm presence helps your child.</p>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">Common Pediatric Situations</h2>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Understanding Fever in Children</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>Content</h4>
+                    <p>Fever is your child's body's way of fighting infection. A fever itself is not dangerous, though it can make your child feel uncomfortable. In the ER, doctors check fever along with other symptoms to understand what's happening.</p>
+                    <h4>Tips</h4>
+                    <ul>
+                        <li>Fever alone is usually not an emergency unless accompanied by difficulty breathing, unresponsiveness, or severe symptoms</li>
+                        <li>Keep your child hydrated with water, juice, or oral rehydration solutions</li>
+                        <li>Light clothing and cool environments help comfort</li>
+                        <li>Over-the-counter fever reducers (like acetaminophen or ibuprofen) can be given as directed</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Preparing Your Child for Stitches</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>Content</h4>
+                    <p>If your child needs stitches, the doctor will numb the area so they won't feel pain, only pressure and tugging. Explain this simply: "The doctor is going to clean the cut and put special thread to help it heal. You'll feel pushing but not owies."</p>
+                    <h4>Tips</h4>
+                    <ul>
+                        <li>Use simple, honest language. Avoid words like "shot" or "needle" — say "medicine to help it not hurt"</li>
+                        <li>Let them know they might hear or feel pressure but it shouldn't hurt</li>
+                        <li>Bring a comfort item or have them hold a parent's hand</li>
+                        <li>Praise brave behavior afterward, but don't make a big deal out of it</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="content-card" onclick="toggleCard(event)">
+                <div class="card-header">
+                    <h3>Helping Your Anxious Child in the ER</h3>
+                    <span class="chevron">▼</span>
+                </div>
+                <div class="card-content">
+                    <h4>Content</h4>
+                    <p>The ER can be scary for children. Your calm presence and honest explanations help them feel safer.</p>
+                    <h4>Tips</h4>
+                    <ul>
+                        <li>Stay calm — children sense your anxiety</li>
+                        <li>Explain things before they happen: "A nurse is going to check your temperature. It will feel cool on your forehead."</li>
+                        <li>Use distraction: favorite stuffed animal, music, or games on a phone</li>
+                        <li>Validate their feelings: "I know you're scared. The doctors are going to help you feel better."</li>
+                        <li>Ask staff if your child can see what's being used before it's used</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 style="font-size: 1.5rem; margin-top: 1.5rem; margin-bottom: 1rem;">General Tips for Parents in the ER</h2>
+
+            <div class="info-box lavender">
+                <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                    <li><strong>Stay as calm as possible:</strong> Children pick up on parental anxiety</li>
+                    <li><strong>Be honest:</strong> Don't say "it won't hurt" if a procedure will be uncomfortable</li>
+                    <li><strong>Use simple language:</strong> Explain procedures in age-appropriate terms</li>
+                    <li><strong>Bring comfort items:</strong> A favorite stuffed animal or blanket can be very soothing</li>
+                    <li><strong>Advocate for your child:</strong> Ask questions and speak up if your child is in pain</li>
+                    <li><strong>Ask about what's next:</strong> Children feel less anxious when they know what to expect</li>
+                    <li><strong>Praise bravery:</strong> After procedures, let your child know you're proud of them</li>
+                </ul>
+            </div>
+
+            <div class="info-box blue" style="margin-top: 2rem;">
+                <p><strong>📚 After the ER:</strong> Talk with your child about what happened. This helps process the experience and reduce anxiety about future medical visits. If your child seems to have ongoing anxiety or trauma from the visit, talk to your pediatrician about support options.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('parents', 'parents')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- ACCESSIBILITY PAGE -->
+        <div id="accessibility" class="page">
+            <h1 style="margin-bottom: 1rem;">Accessibility Settings</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">ER Companion is designed to be accessible to everyone. Adjust these settings to make the site work better for you.</p>
+
+            <div class="info-box blue" style="margin-bottom: 2rem;">
+                <h3>📝 Text Size</h3>
+                <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-primary" onclick="setTextSize('normal')" id="size-normal">Normal</button>
+                    <button class="btn btn-secondary" onclick="setTextSize('large')" id="size-large">Larger</button>
+                    <button class="btn btn-secondary" onclick="setTextSize('xl')" id="size-xl">Extra Large</button>
+                </div>
+            </div>
+
+            <div class="info-box blue">
+                <h3>🌙 High Contrast Mode</h3>
+                <button class="btn btn-secondary" onclick="toggleContrast()" id="contrast-btn" style="margin-top: 1rem;">High Contrast OFF</button>
+            </div>
+
+            <div class="info-box sage" style="margin-top: 2rem;">
+                <h3>✨ Built-In Accessibility</h3>
+                <ul style="margin-left: 1.5rem; color: var(--text-light); margin-top: 1rem;">
+                    <li><strong>Mobile-Friendly Design:</strong> Designed for phones and tablets</li>
+                    <li><strong>Keyboard Navigation:</strong> Navigate using Tab and Enter keys</li>
+                    <li><strong>Simple Language:</strong> Written at 6th-8th grade reading level</li>
+                    <li><strong>Large Touch Targets:</strong> Easy to tap on mobile devices</li>
+                    <li><strong>Color Contrast:</strong> Text is easy to read</li>
+                </ul>
+            </div>
+
+            <div class="info-box lavender" style="margin-top: 2rem;">
+                <h3>💡 Browser Tools</h3>
+                <p style="margin-bottom: 1rem;">Your browser also has built-in accessibility features:</p>
+                <ul style="margin-left: 1.5rem; color: var(--text-light);">
+                    <li><strong>Zoom:</strong> Use Ctrl/Cmd + or - to zoom in and out</li>
+                    <li><strong>Dark Mode:</strong> Enable dark mode in your browser settings</li>
+                    <li><strong>Text-to-Speech:</strong> Use your device's built-in text-to-speech features</li>
+                </ul>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('accessibility', 'accessibility')">Submit Feedback</button>
+            </div>
+        </div>
+
+        <!-- SAFETY PAGE -->
+        <div id="safety" class="page">
+            <h1 style="margin-bottom: 1rem;">Safety & Disclaimer</h1>
+            <p style="color: var(--text-light); margin-bottom: 2rem;">Understanding what ER Companion can and cannot do is important for your safety.</p>
+
+            <div style="background: #FFE6E6; border: 2px solid #FF6B6B; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem;">
+                <h2 style="color: #C92A2A; margin-top: 0;">🚫 ER Companion Does NOT</h2>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem; color: var(--text-dark);">
+                    <li>Diagnose your condition or tell you what is wrong with you</li>
+                    <li>Interpret your test results or lab values</li>
+                    <li>Recommend specific treatments or medications for your individual situation</li>
+                    <li>Provide personalized medical advice</li>
+                    <li>Replace doctors, nurses, or other healthcare professionals</li>
+                    <li>Make clinical decisions for you</li>
+                </ul>
+            </div>
+
+            <div style="background: #F0FDF4; border: 2px solid #22C55E; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem;">
+                <h2 style="color: #16A34A; margin-top: 0;">✓ ER Companion DOES</h2>
+                <ul style="margin-left: 1.5rem; margin-top: 1rem; color: var(--text-dark);">
+                    <li>Explain common medical terms and ER processes in simple language</li>
+                    <li>Help you understand what is happening during your ER visit</li>
+                    <li>Describe common tests, procedures, and medications in general terms</li>
+                    <li>Answer questions about how the ER works</li>
+                    <li>Provide general health education</li>
+                    <li>Help you prepare questions to ask your care team</li>
+                    <li>Support your health literacy and understanding</li>
+                </ul>
+            </div>
+
+            <div class="info-box peach">
+                <h3>⚖️ Important Disclaimer</h3>
+                <p style="margin-top: 1rem;">ER Companion is an educational tool designed to help patients and families understand the emergency department experience and medical concepts. It is not a substitute for professional medical advice, diagnosis, or treatment. Always rely on your healthcare team for personalized medical guidance. If you have emergency symptoms, call 911 or go to your nearest emergency department immediately.</p>
+            </div>
+
+            <h2 style="margin-top: 2rem;">🚨 Call 911 If You Have</h2>
+            <div style="display: grid; gap: 0.75rem;">
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Chest pain or pressure</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Severe difficulty breathing</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Loss of consciousness</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Severe bleeding</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Severe allergic reaction</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Suspected poisoning or overdose</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Suicidal thoughts or self-harm</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Severe injury from trauma</strong></p>
+                </div>
+                <div style="background: white; border: 1px solid #FF6B6B; border-radius: 0.5rem; padding: 1rem;">
+                    <p style="color: var(--text-dark); margin: 0;"><strong>• Any other life-threatening emergency</strong></p>
+                </div>
+            </div>
+
+            <div class="info-box sage" style="margin-top: 2rem;">
+                <h3>💬 For Personalized Medical Advice</h3>
+                <p style="margin-top: 1rem; margin-bottom: 1rem;"><strong>Always talk to your healthcare team.</strong> Your doctor, nurse, or other healthcare providers know your medical history and can give you personalized advice. ER Companion provides general education only.</p>
+                <p style="margin: 0;"><strong>Share ER Companion with your team.</strong> If you find ER Companion helpful, share it with your healthcare providers. They may want to recommend it to other patients.</p>
+            </div>
+
+            <div class="feedback-widget">
+                <div class="feedback-label">Was this helpful?</div>
+                <div class="feedback-buttons">
+                    <button class="feedback-btn" onclick="setFeedback(event, 'helpful')">👍 Yes</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'somewhat')">💬 Sort of</button>
+                    <button class="feedback-btn" onclick="setFeedback(event, 'not-helpful')">👎 No</button>
+                </div>
+                <textarea class="feedback-comment" placeholder="Any suggestions? (optional)" rows="2"></textarea>
+                <button class="feedback-submit" onclick="submitFeedback('safety', 'safety')">Submit Feedback</button>
+            </div>
+        </div>
     </div>
 
-    <!-- hero illustration: person waiting calmly, breathing rings, plant -->
-    <svg class="hero-art" viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle class="breathe-ring" cx="230" cy="150" r="120" fill="var(--sage-50)"/>
-      <circle class="breathe-ring" cx="230" cy="150" r="90" fill="var(--gold-100)" opacity="0.7"/>
-      <!-- waiting room chair -->
-      <rect x="90" y="210" width="150" height="14" rx="7" fill="var(--sage-200)"/>
-      <rect x="100" y="150" width="16" height="70" rx="8" fill="var(--sage-200)"/>
-      <rect x="214" y="150" width="16" height="70" rx="8" fill="var(--sage-200)"/>
-      <rect x="96" y="130" width="140" height="24" rx="12" fill="var(--sage-400)"/>
-      <!-- person -->
-      <g class="float1">
-        <ellipse cx="170" cy="118" rx="24" ry="24" fill="var(--coral-400)"/>
-        <path d="M140 210c0-30 14-58 30-58s30 28 30 58" fill="var(--blue-400)"/>
-        <path d="M125 190c-10 6-16 16-16 26" stroke="var(--blue-600)" stroke-width="8" stroke-linecap="round"/>
-        <circle cx="105" cy="222" r="14" fill="var(--sage-50)" stroke="var(--blue-600)" stroke-width="3"/>
-      </g>
-      <!-- plant -->
-      <g class="float2">
-        <rect x="330" y="240" width="34" height="30" rx="6" fill="var(--coral-400)"/>
-        <path d="M347 240c0-24-18-34-30-36 4 20 12 30 30 36z" fill="var(--sage-600)"/>
-        <path d="M347 240c0-20 16-28 26-30-2 18-10 26-26 30z" fill="var(--sage-400)"/>
-      </g>
-      <!-- clock -->
-      <circle cx="80" cy="70" r="22" fill="var(--gold-100)" stroke="var(--gold-400)" stroke-width="3"/>
-      <path d="M80 58v14l10 6" stroke="var(--gold-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-      <!-- lavender dot cluster -->
-      <circle cx="340" cy="90" r="6" fill="var(--lavender-400)"/>
-      <circle cx="360" cy="110" r="4" fill="var(--lavender-400)"/>
-      <circle cx="320" cy="60" r="4" fill="var(--coral-400)"/>
-    </svg>
-  </div>
-</section>
+    <script>
+        // Page Navigation
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            const page = document.getElementById(pageId);
+            if (page) page.classList.add('active');
+            window.scrollTo(0, 0);
+        }
 
-<!-- TOPICS -->
-<section id="topics">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">What we explain</span>
-      <h2>Five things patients ask most</h2>
-      <p>Tap any card to see how ER Companion explains it — always general, never diagnostic.</p>
-    </div>
-    <div class="card-grid" id="topic-cards">
-      <button class="topic-card" data-prompt="What kinds of tests might I have in the ER, and why?">
-        <div class="icon sage"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v6.5L5.5 18a2 2 0 001.8 3h9.4a2 2 0 001.8-3L14 9.5V3" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 15h8" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <h3>Tests</h3>
-        <p>Why a CT, X-ray, or bloodwork gets ordered.</p>
-      </button>
-      <button class="topic-card" data-prompt="What are some common ER procedures and what do they involve?">
-        <div class="icon coral"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-6 4 12 2-6h4" stroke="#cf7442" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Procedures</h3>
-        <p>What an IV, stitches, or a splint involves.</p>
-      </button>
-      <button class="topic-card" data-prompt="What are some common medications given in the ER, and what do they generally do?">
-        <div class="icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(45 12 12)" stroke="#4f7ea3" stroke-width="1.6"/><path d="M9 15l6-6" stroke="#4f7ea3" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <h3>Medications</h3>
-        <p>What a class of medication is generally for.</p>
-      </button>
-      <button class="topic-card" data-prompt="Why do ER visits often involve a lot of waiting?">
-        <div class="icon gold"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#bd8f22" stroke-width="1.6"/><path d="M12 8v4l3 2" stroke="#bd8f22" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <h3>Waiting</h3>
-        <p>Why ERs triage by urgency, not arrival time.</p>
-      </button>
-      <button class="topic-card" data-prompt="What usually happens when a patient is discharged from the ER?">
-        <div class="icon lavender"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="#8768bd" stroke-width="1.6"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#8768bd" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-        <h3>Discharge</h3>
-        <p>What to expect when it's time to go home.</p>
-      </button>
-    </div>
-  </div>
-</section>
+        // Toggle Card Expansion
+        function toggleCard(event) {
+            const card = event.currentTarget;
+            card.classList.toggle('expanded');
+        }
 
-<!-- ILLUSTRATED STRIP -->
-<section>
-  <div class="wrap">
-    <div class="strip">
-      <div class="strip-card c1">
-        <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z" fill="white" opacity="0.9"/></svg>
-        <h3>Reduces anxiety</h3>
-        <p>Understanding what's happening lowers stress for waiting patients.</p>
-      </div>
-      <div class="strip-card c2">
-        <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z" fill="white" opacity="0.9"/></svg>
-        <h3>Plain language</h3>
-        <p>Sixth-grade reading level. No jargon left unexplained.</p>
-      </div>
-      <div class="strip-card c3">
-        <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="white" stroke-width="2" opacity="0.9"/><path d="M12 7v5l3 3" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.9"/></svg>
-        <h3>Available while you wait</h3>
-        <p>No login, no app store — open it right from the waiting room.</p>
-      </div>
-    </div>
-  </div>
-</section>
+        // Medical Dictionary Search
+        function filterDictionary() {
+            const searchTerm = document.getElementById('dictionary-search').value.toLowerCase();
+            const results = document.getElementById('dictionary-results');
+            const cards = results.querySelectorAll('.content-card');
 
-<!-- CHAT -->
-<section id="chat">
-  <div class="wrap-narrow">
-    <div class="section-head">
-      <span class="eyebrow">Try it yourself</span>
-      <h2>Ask a question</h2>
-      <p>This is a live demo, powered by Claude, with the same guardrails described below.</p>
-    </div>
-    <div class="chat-shell">
-      <div class="chat-header"><span class="chat-dot"></span><span>ER Companion — educational only, not medical advice</span></div>
-      <div id="messages"></div>
-      <form id="chat-form">
-        <input type="text" id="input" placeholder="Ask your own question..." autocomplete="off" />
-        <button type="submit" id="send-btn">Send</button>
-      </form>
-    </div>
-  </div>
-</section>
+            cards.forEach(card => {
+                const title = card.querySelector('h3').textContent.toLowerCase();
+                if (title.includes(searchTerm) || searchTerm === '') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
 
-<!-- WHY DIFFERENT -->
-<section id="why">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="eyebrow">Why it's different</span>
-      <h2>Built with hard limits, on purpose</h2>
-    </div>
-    <div class="diff-grid">
-      <div class="diff-card">
-        <div class="check" style="background:var(--sage-100)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Never diagnoses</h3>
-        <p>It explains general medical concepts — it never tells you what's wrong with you.</p>
-      </div>
-      <div class="diff-card">
-        <div class="check" style="background:var(--coral-100)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#cf7442" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Never contradicts your team</h3>
-        <p>Every answer defers to the doctors and nurses actually treating you.</p>
-      </div>
-      <div class="diff-card">
-        <div class="check" style="background:var(--blue-100)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7ea3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h3>Written to calm, not alarm</h3>
-        <p>No jargon, no scary language — and no false reassurance either.</p>
-      </div>
-    </div>
-  </div>
-</section>
+        // Text Size Adjustment
+        function setTextSize(size) {
+            const root = document.documentElement;
+            const sizeMap = {
+                'normal': '1rem',
+                'large': '1.125rem',
+                'xl': '1.25rem'
+            };
 
-<footer>
-  <div class="disclaimer">
-    ER Companion is an educational tool, not a diagnostic one. It does not replace your doctors and nurses, and it cannot assess your personal medical situation. If something feels urgent, tell a staff member right away.
-  </div>
-  &copy; 2026 ER Companion — a student project, built to be piloted, not prescribed.
-</footer>
+            root.style.fontSize = sizeMap[size];
 
-<script>
-const SYSTEM_PROMPT = `You are ER Companion, an educational assistant used by patients while they wait in an emergency department. Your ONLY job is to help patients understand what is generally happening during an ER visit - not to give advice about their specific situation.
+            // Update button states
+            document.getElementById('size-normal').classList.remove('btn-primary');
+            document.getElementById('size-large').classList.remove('btn-primary');
+            document.getElementById('size-xl').classList.remove('btn-primary');
+            document.getElementById('size-normal').classList.add('btn-secondary');
+            document.getElementById('size-large').classList.add('btn-secondary');
+            document.getElementById('size-xl').classList.add('btn-secondary');
 
-## WHO YOU ARE TALKING TO
-An anxious patient (or a parent of a pediatric patient), often in pain, waiting for care, with a phone in a waiting room or a treatment bay. Assume they are worried. Be calm and warm, never clinical or cold.
+            document.getElementById(`size-${size}`).classList.remove('btn-secondary');
+            document.getElementById(`size-${size}`).classList.add('btn-primary');
 
-## WHAT YOU MUST NEVER DO
-1. Never diagnose, or suggest what condition the patient might have.
-2. Never tell a patient whether their symptoms are or are not an emergency.
-3. Never recommend a treatment, medication, or dose for their specific case.
-4. Never interpret a specific lab value, vital sign, or test result they give you.
-5. Never contradict, second-guess, or cast doubt on anything a doctor or nurse has told them.
-6. Never speculate about how long they will wait, how serious their case is, or what will happen to them personally.
-7. Never role-play as a doctor, nurse, or any clinician.
+            localStorage.setItem('textSize', size);
+        }
 
-## WHAT YOU SHOULD DO
-- Explain, in general terms, why common tests are ordered.
-- Explain what procedures generally involve, step by step, in plain language.
-- Explain what medication classes generally do, never dosing or whether they should take it.
-- Explain typical ER workflow so the process feels less like a black box.
-- Explain medical terminology in plain words.
-- Suggest good questions the patient could ask their actual care team.
-- Write at roughly a 6th-grade reading level. Short sentences. No unnecessary jargon.
-- Keep tone calm and steady. No alarming language, no falsely reassuring language either - just factual and general.
+        // High Contrast Mode
+        function toggleContrast() {
+            const body = document.body;
+            body.style.filter = body.style.filter ? '' : 'invert(1)';
+            const btn = document.getElementById('contrast-btn');
+            btn.textContent = body.style.filter ? 'High Contrast ON ✓' : 'High Contrast OFF';
+            localStorage.setItem('highContrast', body.style.filter ? 'true' : 'false');
+        }
 
-## IF A QUESTION CROSSES THE LINE
-If a question would require diagnosing them or interpreting their personal results, gently decline that specific part and redirect to their care team, while still offering whatever general, educational context you safely can.
+        // Feedback
+        let currentFeedback = {};
 
-If someone describes a possible emergency (worsening symptoms, can't breathe, chest pain getting worse), tell them clearly to alert a nurse or staff member immediately - this overrides giving an educational answer first.
+        function setFeedback(event, rating) {
+            const widget = event.target.closest('.feedback-widget');
+            const buttons = widget.querySelectorAll('.feedback-btn');
+            buttons.forEach(btn => btn.classList.remove('selected'));
+            event.target.classList.add('selected');
 
-## REQUIRED CLOSING
-End every substantive answer with a short, natural sentence encouraging the patient to bring the question to their actual healthcare team - vary the wording.
+            const comment = widget.querySelector('.feedback-comment');
+            const submit = widget.querySelector('.feedback-submit');
 
-## FORMAT
-Keep answers short - a few sentences to a short paragraph. Plain text, minimal formatting.`;
+            if (rating === 'helpful') {
+                comment.classList.remove('show');
+                submit.classList.add('show');
+            } else {
+                comment.classList.add('show');
+                submit.classList.add('show');
+            }
 
-const messagesEl = document.getElementById('messages');
-const form = document.getElementById('chat-form');
-const input = document.getElementById('input');
-const sendBtn = document.getElementById('send-btn');
+            currentFeedback[widget.id] = rating;
+        }
 
-let history = [];
-let loading = false;
+        function submitFeedback(pageId, widgetId) {
+            const widget = document.getElementById(widgetId) || document.querySelector(`[id="${widgetId}"]`);
+            const rating = currentFeedback[widgetId];
+            const comment = widget.querySelector('.feedback-comment').value;
 
-function renderMessages(){
-  messagesEl.innerHTML = '';
-  history.forEach(m => {
-    const div = document.createElement('div');
-    div.className = 'msg ' + m.role;
-    div.textContent = m.content;
-    messagesEl.appendChild(div);
-  });
-  if(loading){
-    const div = document.createElement('div');
-    div.className = 'msg thinking';
-    div.innerHTML = '<span class="mini-breathe"></span> Thinking...';
-    messagesEl.appendChild(div);
-  }
-  messagesEl.scrollTop = messagesEl.scrollHeight;
-}
+            const feedback = {
+                pageId: pageId,
+                rating: rating,
+                comment: comment,
+                timestamp: new Date().toISOString()
+            };
 
-async function sendMessage(text){
-  if(!text.trim() || loading) return;
-  history.push({ role:'user', content:text });
-  loading = true;
-  sendBtn.disabled = true;
-  renderMessages();
+            let feedbackList = JSON.parse(localStorage.getItem('erCompanionFeedback') || '[]');
+            feedbackList.push(feedback);
+            localStorage.setItem('erCompanionFeedback', JSON.stringify(feedbackList));
 
-  try{
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method:"POST",
-      headers:{ "Content-Type":"application/json" },
-      body: JSON.stringify({
-        model:"claude-sonnet-4-6",
-        max_tokens:500,
-        system:SYSTEM_PROMPT,
-        messages: history.map(m => ({ role:m.role, content:m.content }))
-      })
-    });
-    const data = await response.json();
-    const textBlock = (data.content || []).find(b => b.type === 'text');
-    const reply = textBlock ? textBlock.text : "Sorry, I couldn't respond. Please ask a member of your care team.";
-    history.push({ role:'assistant', content:reply });
-  }catch(err){
-    history.push({ role:'assistant', content:"Sorry, something went wrong. Please ask a member of your care team if you need help right now." });
-  }finally{
-    loading = false;
-    sendBtn.disabled = false;
-    renderMessages();
-  }
-}
+            widget.innerHTML = '<div class="info-box sage"><p>✓ Thank you for your feedback!</p></div>';
+            setTimeout(() => {
+                location.reload();
+            }, 2000);
+        }
 
-document.querySelectorAll('.topic-card').forEach(btn => {
-  btn.addEventListener('click', () => sendMessage(btn.dataset.prompt));
-});
+        // Initialize
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTextSize = localStorage.getItem('textSize') || 'normal';
+            setTextSize(savedTextSize);
 
-form.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const text = input.value;
-  input.value = '';
-  sendMessage(text);
-});
-</script>
+            if (localStorage.getItem('highContrast') === 'true') {
+                toggleContrast();
+            }
+        });
+
+        // Prevent page reload on form submit
+        document.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && e.target.id === 'chat-input') {
+                e.preventDefault();
+                sendChatMessage();
+            }
+        });
+
+        // Simple chat simulation (without API)
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            const messagesDiv = document.getElementById('chat-messages');
+
+            // Add user message
+            const userMsg = document.createElement('div');
+            userMsg.style.cssText = 'padding: 1rem; background: var(--sage); color: white; border-radius: 0.75rem; border-bottom-right-radius: 0; margin-left: auto; max-width: 80%;';
+            userMsg.textContent = message;
+            messagesDiv.appendChild(userMsg);
+
+            input.value = '';
+
+            // Simulate assistant response
+            setTimeout(() => {
+                const assistantMsg = document.createElement('div');
+                assistantMsg.style.cssText = 'padding: 1rem; background: var(--sage-light); color: var(--text-dark); border-radius: 0.75rem; border-bottom-left-radius: 0; max-width: 80%;';
+
+                // Simple responses based on keywords
+                let response = "That's a great question! I'm here to explain medical concepts and ER processes in simple terms. For questions about your personal situation, please ask your healthcare team.";
+
+                if (message.toLowerCase().includes('ct') || message.toLowerCase().includes('x-ray') || message.toLowerCase().includes('scan')) {
+                    response = "A CT scan is a special imaging machine that takes detailed 3D pictures of your body using X-rays. It helps doctors see inside your body in much more detail than a regular X-ray. The machine looks like a large donut and you lie on a table that slides through it. It's painless and usually takes 10-30 minutes.";
+                } else if (message.toLowerCase().includes('iv')) {
+                    response = "An IV (intravenous line) is a small plastic tube placed in your vein that allows doctors to give you fluids, medications, or draw blood without multiple needle sticks. A nurse cleans your arm, inserts a tiny needle to place the plastic tube, then removes the needle leaving just the tube. You'll feel a quick pinch and some pressure.";
+                } else if (message.toLowerCase().includes('triage')) {
+                    response = "Triage is the process where a nurse quickly assesses your condition to determine how urgently you need care. They'll ask about your symptoms, take your vital signs, and review your medical history. This determines the priority level—not the order you're seen. Emergencies are handled based on urgency, not first-come-first-served.";
+                } else if (message.toLowerCase().includes('blood test') || message.toLowerCase().includes('cbc')) {
+                    response = "A CBC (Complete Blood Count) is a blood test that counts different types of blood cells to check your overall blood health. A technician takes a small sample from your arm, which takes about 30 seconds. It's painless except for a quick pinch. Results usually come back within a few hours.";
+                }
+
+                assistantMsg.textContent = response;
+                messagesDiv.appendChild(assistantMsg);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            }, 800);
+        }
+    </script>
 </body>
 </html>
+
+
