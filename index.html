@@ -9,16 +9,28 @@
 
   :root{
     --sand-50:#fbfaf7;
-    --sand-100:#f5f1e9;
     --sage-50:#f4f9f7;
     --sage-100:#e3efea;
     --sage-200:#c3ddd3;
     --sage-400:#7fae9c;
     --sage-600:#4f7d6c;
     --sage-800:#2f4d42;
-    --peach-300:#f0c9a8;
-    --peach-500:#e2a06e;
-    --peach-700:#c17a45;
+
+    --coral-100:#fce6da;
+    --coral-400:#ec9c6e;
+    --coral-600:#cf7442;
+
+    --blue-100:#dee9f2;
+    --blue-400:#82abcb;
+    --blue-600:#4f7ea3;
+
+    --gold-100:#faf0d3;
+    --gold-400:#e3bd5a;
+    --gold-600:#bd8f22;
+
+    --lavender-100:#ebe3f7;
+    --lavender-400:#b199dd;
+    --lavender-600:#8768bd;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -30,7 +42,6 @@
   }
   h1,h2,h3,.display{font-family:'Fraunces',serif;}
   a{color:inherit;}
-  img{max-width:100%;display:block;}
   :focus-visible{outline:2px solid var(--sage-600);outline-offset:3px;}
   @media (prefers-reduced-motion:reduce){
     *{animation:none!important;transition:none!important;}
@@ -52,47 +63,59 @@
   nav .links a:hover{color:var(--sage-800);}
 
   section{padding:80px 24px;}
-  .wrap{max-width:960px;margin:0 auto;}
+  .wrap{max-width:1000px;margin:0 auto;}
   .wrap-narrow{max-width:680px;margin:0 auto;}
 
   /* ---------- HERO ---------- */
   .hero{
-    padding:96px 24px 64px;
-    text-align:center;
+    padding:80px 24px 40px;
     position:relative;
     overflow:hidden;
   }
   .hero::before{
     content:"";
     position:absolute;
-    top:-120px;left:50%;transform:translateX(-50%);
-    width:900px;height:900px;
-    background:radial-gradient(circle, var(--sage-50) 0%, transparent 60%);
+    top:-200px;left:-120px;
+    width:520px;height:520px;
+    background:radial-gradient(circle, var(--gold-100) 0%, transparent 70%);
     z-index:0;
   }
-  .hero-inner{position:relative;z-index:1;}
+  .hero::after{
+    content:"";
+    position:absolute;
+    top:-100px;right:-160px;
+    width:600px;height:600px;
+    background:radial-gradient(circle, var(--blue-100) 0%, transparent 70%);
+    z-index:0;
+  }
+  .hero-grid{
+    position:relative;z-index:1;
+    max-width:1000px;margin:0 auto;
+    display:grid;grid-template-columns:1.1fr 0.9fr;
+    gap:40px;align-items:center;
+  }
   .eyebrow{
     display:inline-block;
     font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
     color:var(--sage-600);font-weight:600;
     background:var(--sage-100);
     padding:6px 14px;border-radius:999px;
-    margin-bottom:24px;
+    margin-bottom:20px;
   }
   .hero h1{
-    font-size:clamp(36px,6vw,58px);
+    font-size:clamp(34px,5vw,52px);
     font-weight:600;
     line-height:1.08;
-    margin:0 0 20px;
+    margin:0 0 18px;
     color:var(--sage-800);
   }
-  .hero h1 em{font-style:italic;color:var(--peach-700);font-weight:500;}
+  .hero h1 em{font-style:italic;color:var(--coral-600);font-weight:500;}
   .hero p.sub{
-    font-size:18px;color:var(--sage-600);
-    max-width:520px;margin:0 auto 40px;
+    font-size:17px;color:var(--sage-600);
+    max-width:440px;margin:0 0 32px;
     line-height:1.6;
   }
-  .cta-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:56px;}
+  .cta-row{display:flex;gap:12px;flex-wrap:wrap;}
   .btn{
     padding:14px 28px;border-radius:999px;font-size:15px;font-weight:600;
     border:none;cursor:pointer;text-decoration:none;display:inline-block;
@@ -103,24 +126,17 @@
   .btn-ghost{background:transparent;color:var(--sage-800);border:1px solid var(--sage-200);}
   .btn-ghost:hover{background:var(--sage-50);}
 
-  /* breathing circle signature element */
-  .breathe-wrap{display:flex;justify-content:center;margin-bottom:8px;}
-  .breathe{width:180px;height:180px;position:relative;}
-  .breathe circle{
-    transform-origin:center;
-    animation:breathe 5.5s ease-in-out infinite;
-  }
-  .breathe circle.c1{animation-delay:0s;}
-  .breathe circle.c2{animation-delay:-1.8s;}
-  .breathe circle.c3{animation-delay:-3.6s;}
-  @keyframes breathe{
-    0%,100%{transform:scale(0.75);opacity:0.25;}
-    50%{transform:scale(1);opacity:0.55;}
-  }
+  /* hero illustration */
+  .hero-art{width:100%;height:auto;}
+  .float1{animation:float1 6s ease-in-out infinite;}
+  .float2{animation:float2 7s ease-in-out infinite;}
+  @keyframes float1{0%,100%{transform:translateY(0px);}50%{transform:translateY(-10px);}}
+  @keyframes float2{0%,100%{transform:translateY(0px);}50%{transform:translateY(8px);}}
+  .breathe-ring{transform-origin:center;animation:breathe 4s ease-in-out infinite;}
+  @keyframes breathe{0%,100%{transform:scale(0.95);opacity:0.5;}50%{transform:scale(1.08);opacity:0.9;}}
 
   /* ---------- TOPIC CARDS ---------- */
   .section-head{text-align:center;margin-bottom:48px;}
-  .section-head .eyebrow{margin-bottom:16px;}
   .section-head h2{font-size:32px;font-weight:600;margin:0 0 12px;}
   .section-head p{color:var(--sage-600);font-size:16px;max-width:480px;margin:0 auto;}
 
@@ -141,17 +157,37 @@
   .topic-card:hover{
     transform:translateY(-3px);
     box-shadow:0 12px 24px -12px rgba(47,77,66,0.18);
-    border-color:var(--sage-200);
   }
   .topic-card .icon{
     width:40px;height:40px;
-    background:var(--sage-50);
     border-radius:12px;
     display:flex;align-items:center;justify-content:center;
     margin-bottom:16px;
   }
   .topic-card h3{font-size:16px;font-weight:600;margin:0 0 6px;}
   .topic-card p{font-size:13px;color:var(--sage-600);margin:0;line-height:1.5;}
+
+  .icon.sage{background:var(--sage-100);}
+  .icon.coral{background:var(--coral-100);}
+  .icon.blue{background:var(--blue-100);}
+  .icon.gold{background:var(--gold-100);}
+  .icon.lavender{background:var(--lavender-100);}
+
+  /* ---------- ILLUSTRATION STRIP ---------- */
+  .strip{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;
+  }
+  .strip-card{
+    border-radius:24px;padding:28px 24px;min-height:180px;
+    display:flex;flex-direction:column;justify-content:flex-end;
+    position:relative;overflow:hidden;
+  }
+  .strip-card svg{position:absolute;top:16px;right:16px;opacity:0.9;}
+  .strip-card h3{font-size:16px;font-weight:600;margin:0 0 4px;color:white;}
+  .strip-card p{font-size:13px;margin:0;color:rgba(255,255,255,0.85);}
+  .strip-card.c1{background:linear-gradient(150deg,var(--sage-600),var(--sage-800));}
+  .strip-card.c2{background:linear-gradient(150deg,var(--coral-400),var(--coral-600));}
+  .strip-card.c3{background:linear-gradient(150deg,var(--blue-400),var(--blue-600));}
 
   /* ---------- CHAT ---------- */
   .chat-shell{
@@ -167,7 +203,7 @@
     padding:20px 24px;
     display:flex;align-items:center;gap:10px;
   }
-  .chat-dot{width:8px;height:8px;border-radius:50%;background:var(--peach-300);}
+  .chat-dot{width:8px;height:8px;border-radius:50%;background:var(--coral-400);}
   .chat-header span{font-size:14px;font-weight:500;opacity:0.9;}
   #messages{
     min-height:220px;max-height:420px;overflow-y:auto;
@@ -182,7 +218,7 @@
   .msg.user{align-self:flex-end;background:var(--sage-600);color:white;border-bottom-right-radius:6px;}
   .msg.assistant{align-self:flex-start;background:white;border:1px solid var(--sage-100);border-bottom-left-radius:6px;}
   .msg.thinking{display:flex;align-items:center;gap:8px;color:var(--sage-400);font-style:italic;}
-  .mini-breathe{width:14px;height:14px;border-radius:50%;background:var(--sage-200);animation:breathe 1.6s ease-in-out infinite;}
+  .mini-breathe{width:14px;height:14px;border-radius:50%;background:var(--gold-400);animation:breathe 1.6s ease-in-out infinite;}
 
   form#chat-form{
     display:flex;gap:10px;padding:16px 20px;border-top:1px solid var(--sage-100);background:white;
@@ -201,35 +237,12 @@
 
   /* ---------- WHY DIFFERENT ---------- */
   .diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;}
-  .diff-card{padding:8px;}
   .diff-card .check{
-    width:32px;height:32px;border-radius:50%;background:var(--sage-100);
+    width:32px;height:32px;border-radius:50%;
     display:flex;align-items:center;justify-content:center;margin-bottom:14px;
   }
   .diff-card h3{font-size:16px;font-weight:600;margin:0 0 8px;}
   .diff-card p{font-size:14px;color:var(--sage-600);line-height:1.6;margin:0;}
-
-  /* ---------- FOUNDER ---------- */
-  .founder{
-    background:var(--sage-800);
-    color:var(--sand-50);
-    border-radius:32px;
-    padding:64px 40px;
-    display:grid;
-    grid-template-columns:200px 1fr;
-    gap:48px;
-    align-items:center;
-  }
-  .founder-avatar{width:180px;height:180px;}
-  .founder h2{font-size:14px;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;color:var(--peach-300);margin:0 0 16px;font-family:'Inter',sans-serif;}
-  .founder h3{font-size:28px;font-weight:600;margin:0 0 6px;}
-  .founder .role{font-size:14px;color:var(--sage-200);margin-bottom:20px;}
-  .founder p.bio{font-size:15px;line-height:1.7;color:#e3efea;margin:0 0 20px;}
-  .chip-row{display:flex;flex-wrap:wrap;gap:8px;}
-  .chip{
-    font-size:12px;font-weight:500;padding:6px 12px;border-radius:999px;
-    background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.15);
-  }
 
   /* ---------- FOOTER ---------- */
   footer{
@@ -241,10 +254,11 @@
     padding:16px 20px;border-radius:16px;color:var(--sage-600);line-height:1.6;
   }
 
-  @media (max-width:640px){
-    .founder{grid-template-columns:1fr;text-align:center;padding:40px 24px;}
-    .founder-avatar{margin:0 auto;}
-    .chip-row{justify-content:center;}
+  @media (max-width:760px){
+    .hero-grid{grid-template-columns:1fr;text-align:center;}
+    .cta-row{justify-content:center;}
+    .hero p.sub{margin:0 auto 32px;}
+    .strip{grid-template-columns:1fr;}
     nav .links{display:none;}
   }
 </style>
@@ -262,27 +276,53 @@
   <div class="links">
     <a href="#topics">How it helps</a>
     <a href="#chat">Try it</a>
-    <a href="#founder">About</a>
+    <a href="#why">Why it's different</a>
   </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-inner">
-    <div class="breathe-wrap">
-      <svg class="breathe" viewBox="0 0 180 180">
-        <circle class="c1" cx="90" cy="90" r="80" fill="var(--sage-100)"/>
-        <circle class="c2" cx="90" cy="90" r="60" fill="var(--sage-200)"/>
-        <circle class="c3" cx="90" cy="90" r="40" fill="var(--sage-400)"/>
-      </svg>
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Emergency department companion</span>
+      <h1>The waiting room,<br/><em>explained.</em></h1>
+      <p class="sub">Plain-language answers about tests, procedures, and medications while you wait — so the visit feels a little less like a black box, and a little less scary.</p>
+      <div class="cta-row">
+        <a href="#chat" class="btn btn-primary">Try it now</a>
+        <a href="#topics" class="btn btn-ghost">See what it explains</a>
+      </div>
     </div>
-    <span class="eyebrow">Emergency department companion</span>
-    <h1>The waiting room,<br/><em>explained.</em></h1>
-    <p class="sub">Plain-language answers about tests, procedures, and medications while you wait — so the visit feels a little less like a black box, and a little less scary.</p>
-    <div class="cta-row">
-      <a href="#chat" class="btn btn-primary">Try it now</a>
-      <a href="#founder" class="btn btn-ghost">About the founder</a>
-    </div>
+
+    <!-- hero illustration: person waiting calmly, breathing rings, plant -->
+    <svg class="hero-art" viewBox="0 0 400 340" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle class="breathe-ring" cx="230" cy="150" r="120" fill="var(--sage-50)"/>
+      <circle class="breathe-ring" cx="230" cy="150" r="90" fill="var(--gold-100)" opacity="0.7"/>
+      <!-- waiting room chair -->
+      <rect x="90" y="210" width="150" height="14" rx="7" fill="var(--sage-200)"/>
+      <rect x="100" y="150" width="16" height="70" rx="8" fill="var(--sage-200)"/>
+      <rect x="214" y="150" width="16" height="70" rx="8" fill="var(--sage-200)"/>
+      <rect x="96" y="130" width="140" height="24" rx="12" fill="var(--sage-400)"/>
+      <!-- person -->
+      <g class="float1">
+        <ellipse cx="170" cy="118" rx="24" ry="24" fill="var(--coral-400)"/>
+        <path d="M140 210c0-30 14-58 30-58s30 28 30 58" fill="var(--blue-400)"/>
+        <path d="M125 190c-10 6-16 16-16 26" stroke="var(--blue-600)" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="105" cy="222" r="14" fill="var(--sage-50)" stroke="var(--blue-600)" stroke-width="3"/>
+      </g>
+      <!-- plant -->
+      <g class="float2">
+        <rect x="330" y="240" width="34" height="30" rx="6" fill="var(--coral-400)"/>
+        <path d="M347 240c0-24-18-34-30-36 4 20 12 30 30 36z" fill="var(--sage-600)"/>
+        <path d="M347 240c0-20 16-28 26-30-2 18-10 26-26 30z" fill="var(--sage-400)"/>
+      </g>
+      <!-- clock -->
+      <circle cx="80" cy="70" r="22" fill="var(--gold-100)" stroke="var(--gold-400)" stroke-width="3"/>
+      <path d="M80 58v14l10 6" stroke="var(--gold-600)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <!-- lavender dot cluster -->
+      <circle cx="340" cy="90" r="6" fill="var(--lavender-400)"/>
+      <circle cx="360" cy="110" r="4" fill="var(--lavender-400)"/>
+      <circle cx="320" cy="60" r="4" fill="var(--coral-400)"/>
+    </svg>
   </div>
 </section>
 
@@ -296,30 +336,53 @@
     </div>
     <div class="card-grid" id="topic-cards">
       <button class="topic-card" data-prompt="What kinds of tests might I have in the ER, and why?">
-        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v6.5L5.5 18a2 2 0 001.8 3h9.4a2 2 0 001.8-3L14 9.5V3" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 15h8" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="icon sage"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 3h6M10 3v6.5L5.5 18a2 2 0 001.8 3h9.4a2 2 0 001.8-3L14 9.5V3" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 15h8" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>Tests</h3>
         <p>Why a CT, X-ray, or bloodwork gets ordered.</p>
       </button>
       <button class="topic-card" data-prompt="What are some common ER procedures and what do they involve?">
-        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-6 4 12 2-6h4" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="icon coral"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4 12h4l2-6 4 12 2-6h4" stroke="#cf7442" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Procedures</h3>
         <p>What an IV, stitches, or a splint involves.</p>
       </button>
       <button class="topic-card" data-prompt="What are some common medications given in the ER, and what do they generally do?">
-        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(45 12 12)" stroke="#4f7d6c" stroke-width="1.6"/><path d="M9 15l6-6" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><ellipse cx="12" cy="12" rx="8" ry="5" transform="rotate(45 12 12)" stroke="#4f7ea3" stroke-width="1.6"/><path d="M9 15l6-6" stroke="#4f7ea3" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>Medications</h3>
         <p>What a class of medication is generally for.</p>
       </button>
       <button class="topic-card" data-prompt="Why do ER visits often involve a lot of waiting?">
-        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#4f7d6c" stroke-width="1.6"/><path d="M12 8v4l3 2" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="icon gold"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="#bd8f22" stroke-width="1.6"/><path d="M12 8v4l3 2" stroke="#bd8f22" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>Waiting</h3>
         <p>Why ERs triage by urgency, not arrival time.</p>
       </button>
       <button class="topic-card" data-prompt="What usually happens when a patient is discharged from the ER?">
-        <div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="#4f7d6c" stroke-width="1.6"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#4f7d6c" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+        <div class="icon lavender"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="5" y="4" width="14" height="16" rx="2" stroke="#8768bd" stroke-width="1.6"/><path d="M9 9h6M9 13h6M9 17h3" stroke="#8768bd" stroke-width="1.6" stroke-linecap="round"/></svg></div>
         <h3>Discharge</h3>
         <p>What to expect when it's time to go home.</p>
       </button>
+    </div>
+  </div>
+</section>
+
+<!-- ILLUSTRATED STRIP -->
+<section>
+  <div class="wrap">
+    <div class="strip">
+      <div class="strip-card c1">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M12 21s-7-4.5-9.5-9C.5 8 2 4 6 4c2 0 3.5 1.2 6 4 2.5-2.8 4-4 6-4 4 0 5.5 4 3.5 8-2.5 4.5-9.5 9-9.5 9z" fill="white" opacity="0.9"/></svg>
+        <h3>Reduces anxiety</h3>
+        <p>Understanding what's happening lowers stress for waiting patients.</p>
+      </div>
+      <div class="strip-card c2">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 6.6L21 11l-6.6 2.4L12 20l-2.4-6.6L3 11l6.6-2.4z" fill="white" opacity="0.9"/></svg>
+        <h3>Plain language</h3>
+        <p>Sixth-grade reading level. No jargon left unexplained.</p>
+      </div>
+      <div class="strip-card c3">
+        <svg width="46" height="46" viewBox="0 0 24 24" fill="none"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="white" stroke-width="2" opacity="0.9"/><path d="M12 7v5l3 3" stroke="white" stroke-width="2" stroke-linecap="round" opacity="0.9"/></svg>
+        <h3>Available while you wait</h3>
+        <p>No login, no app store — open it right from the waiting room.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -344,7 +407,7 @@
 </section>
 
 <!-- WHY DIFFERENT -->
-<section>
+<section id="why">
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Why it's different</span>
@@ -352,24 +415,23 @@
     </div>
     <div class="diff-grid">
       <div class="diff-card">
-        <div class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check" style="background:var(--sage-100)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Never diagnoses</h3>
         <p>It explains general medical concepts — it never tells you what's wrong with you.</p>
       </div>
       <div class="diff-card">
-        <div class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check" style="background:var(--coral-100)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#cf7442" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Never contradicts your team</h3>
         <p>Every answer defers to the doctors and nurses actually treating you.</p>
       </div>
       <div class="diff-card">
-        <div class="check"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7d6c" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <div class="check" style="background:var(--blue-100)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4 10-10" stroke="#4f7ea3" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
         <h3>Written to calm, not alarm</h3>
-        <p>Sixth-grade reading level, no jargon, no scary language — and no false reassurance either.</p>
+        <p>No jargon, no scary language — and no false reassurance either.</p>
       </div>
     </div>
   </div>
 </section>
-
 
 <footer>
   <div class="disclaimer">
