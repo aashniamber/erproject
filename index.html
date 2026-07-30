@@ -285,56 +285,6 @@
         }
         /* Top corner artwork */
 
-.corner-decoration {
-    position: absolute;
-    z-index: 0;
-    pointer-events: none;
-}
-
-.left-decoration {
-    top: 120px;
-    left: -70px;
-}
-
-.right-decoration {
-    top: 150px;
-    right: -50px;
-}
-
-
-/* Left pastel circle */
-
-.soft-circle {
-    width: 240px;
-    height: 240px;
-    border-radius: 50%;
-    background: linear-gradient(
-        135deg,
-        var(--sage-light),
-        var(--lavender)
-    );
-    opacity: 0.8;
-}
-
-
-/* Medical cross */
-
-.medical-cross {
-    position: absolute;
-    top: 55px;
-    left: 100px;
-    font-size: 90px;
-    font-weight: 700;
-    color: var(--sage);
-    opacity: 0.7;
-}
-
-
-/* Heart */
-
-.small-heart {
-    position: absolute;
-    top: 145px;
     left: 155px;
     font-size: 45px;
     color: #E9A7B0;
@@ -351,53 +301,6 @@
     padding: 20px;
     box-shadow: 0 15px 40px rgba(0,0,0,0.08);
     transform: rotate(8deg);
-}
-
-
-.ecg-card svg {
-    width: 100%;
-    height: 100%;
-}
-
-
-.ecg-card polyline {
-    fill: none;
-    stroke: var(--blue-main);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-}
-
-
-.sparkle {
-    position: absolute;
-    right: 20px;
-    bottom: -25px;
-    font-size: 45px;
-    color: #E9B86A;
-}
-
-
-/* subtle movement */
-
-.corner-decoration {
-    animation: float 5s ease-in-out infinite;
-}
-
-@keyframes float {
-    0%,100% {
-        transform: translateY(0);
-    }
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-
-@media(max-width:800px){
-    .corner-decoration {
-        display:none;
-    }
 }
 
         /* Module Grid */
@@ -773,9 +676,140 @@
         .mb-3 {
             margin-bottom: 1.5rem;
         }
+        /* Top corner artwork */
+
+.corner-decoration {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.left-decoration {
+    top: 120px;
+    left: -70px;
+}
+
+.right-decoration {
+    top: 150px;
+    right: -50px;
+}
+
+
+/* Left pastel circle */
+
+.soft-circle {
+    width: 240px;
+    height: 240px;
+    border-radius: 50%;
+    background: linear-gradient(
+        135deg,
+        var(--sage-light),
+        var(--lavender)
+    );
+    opacity: 0.8;
+}
+
+
+/* Medical cross */
+
+.medical-cross {
+    position: absolute;
+    top: 55px;
+    left: 100px;
+    font-size: 90px;
+    font-weight: 700;
+    color: var(--sage);
+    opacity: 0.7;
+}
+
+
+/* Heart */
+
+.small-heart {
+    position: absolute;
+    top: 145px;
+    left: 155px;
+    font-size: 45px;
+    color: #E9A7B0;
+}
+
+
+/* Right ECG card */
+
+.ecg-card {
+    width: 230px;
+    height: 110px;
+    background: white;
+    border-radius: 28px;
+    padding: 20px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+    transform: rotate(8deg);
+}
+
+
+.ecg-card svg {
+    width: 100%;
+    height: 100%;
+}
+
+
+.ecg-card polyline {
+    fill: none;
+    stroke: var(--blue-main);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.sparkle {
+    position: absolute;
+    right: 20px;
+    bottom: -25px;
+    font-size: 45px;
+    color: #E9B86A;
+}
+
+
+/* subtle movement */
+
+.corner-decoration {
+    animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%,100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+
+@media(max-width:800px){
+    .corner-decoration {
+        display:none;
+    }
+}
     </style>
 </head>
 <body>
+    <!-- Corner Decorations -->
+<div class="corner-decoration left-decoration">
+    <div class="soft-circle"></div>
+    <div class="medical-cross">+</div>
+    <div class="small-heart">♥</div>
+</div>
+
+<div class="corner-decoration right-decoration">
+    <div class="ecg-card">
+        <svg viewBox="0 0 200 80">
+            <polyline points="0,40 40,40 55,15 75,65 95,40 200,40"/>
+        </svg>
+    </div>
+    <div class="sparkle">✦</div>
+</div>
     
     <!-- Header -->
     <header>
